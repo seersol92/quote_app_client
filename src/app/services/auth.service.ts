@@ -5,7 +5,7 @@ import { tokenNotExpired } from 'angular2-jwt';
 
 @Injectable()
 export class AuthService {
-  domain = 'https://mean-app2-seersol.c9users.io:8080';
+  domain = 'https://mean-app2-seersol.c9users.io:8081';
   authToken;
   user;
   options;

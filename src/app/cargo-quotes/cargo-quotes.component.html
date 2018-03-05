@@ -1,15 +1,91 @@
 <ng-template #template>
         <div class="modal-header">
-          <h4 class="modal-title pull-left">Modal</h4>
+          <h4 class="modal-title pull-left">Quotes</h4>
           <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
         <div class="modal-body">
-          This is a modal.
+            <form class="form-horizontal">
+                <fieldset>
+                    <div class="form-group">
+                    <div class="col-lg-10 col-lg-offset-2">
+                        <label>
+                            <input type="radio" name="optionsRadios" id="optionsRadios1" value="option1" checked="">
+                            Cargo
+                        </label>
+                        &nbsp;&nbsp;
+                        <label>
+                            <input type="radio" name="optionsRadios" id="optionsRadios2" value="option2">
+                            TC
+                        </label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                    <div class="col-lg-5 col-lg-offset-2">
+                        <input type="text" class="form-control" id="inputEmail" placeholder="CHARTERER">
+                    </div>
+                    <div class="col-lg-5 ">
+                        <input type="text" class="form-control" id="inputEmail" placeholder="BROKER">
+                    </div>
+                    </div>
+                    <div class="form-group">
+                    <div class="col-lg-5 col-lg-offset-2">
+                        <input type="text" class="form-control" id="inputEmail" placeholder="GRADE"> 
+                    </div>
+                    <div class="col-lg-5 ">
+                        <input type="text" class="form-control" id="inputEmail" placeholder="QUANTITY">
+                    </div>
+                    </div>
+                    <div class="form-group">
+                    <div class="col-lg-5 col-lg-offset-2">
+                        <input type="date" class="form-control" id="inputEmail" placeholder="MM/DD/YYYY"> 
+                    </div>
+                    <div class="col-lg-5 ">
+                        <input type="date" class="form-control" id="inputEmail" placeholder="MM/DD/YYYY" >
+                    </div>
+                    </div>
+                    <div class="form-group">
+                    <label for="inputPassword" class="col-lg-2 control-label">LOAD</label>
+                    <div class="col-lg-10">
+                        <input type="password" class="form-control" id="inputPassword" placeholder="LOAD" > 
+                    </div>
+                    </div>
+                    <div class="form-group">
+                    <label for="inputPassword" class="col-lg-2 control-label">DISCHARGE</label>
+                    <div class="col-lg-10">
+                        <input type="password" class="form-control" id="inputPassword" placeholder="DISCHARGE" >
+                    </div>
+                    </div>   
+                    <div class="form-group">
+                    <div class="col-lg-5 col-lg-offset-2">
+                        <input type="text" class="form-control" id="inputEmail" placeholder="RATE TYPE"> 
+                    </div>
+                    <div class="col-lg-5 ">
+                        <input type="text" class="form-control" id="inputEmail" placeholder="RATE" >
+                    </div>
+                    </div> 
+                    <div class="form-group">
+                    <div class="col-lg-10 col-lg-offset-2">
+                        <input type="password" class="form-control" id="inputPassword" placeholder="VESSEL" >
+                    </div>
+                    </div>     
+                    <div class="form-group">
+                    <label for="select" class="col-lg-2 control-label">REMARKS</label>
+                    <div class="col-lg-10">
+                        <textarea name="" id="" class="form-control" rows="3"></textarea>
+                    </div>
+                    </div>
+                    <div class="form-group">
+                    <div class="col-lg-10 col-lg-offset-2 text-right">
+                        <button type="button" class="btn btn-default" aria-label="Close" (click)="modalRef.hide()">Cancel</button>
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                    </div>
+                    </div>
+                </fieldset>
+            </form>        
         </div>
 </ng-template>
-
 <div class="row">
     <app-sidebar ></app-sidebar>
     <div class="col-sm-9">

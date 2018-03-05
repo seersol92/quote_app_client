@@ -1,9 +1,47 @@
+<ng-template #cargoregister>
+        <div class="modal-header">
+          <h4 class="modal-title pull-left">New Cargo</h4>
+          <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+            <form class="form-horizontal">
+                <fieldset>
+                    <div class="form-group">
+                    <label for="grade" class="col-lg-2 control-label">GRADE</label>
+                    <div class="col-lg-10">
+                        <input type="name" class="form-control" id="grade" placeholder="GRADE" > 
+                    </div>
+                    </div>
+                    <div class="form-group">
+                    <label for="des" class="col-lg-2 control-label">DESCRIPTION</label>
+                    <div class="col-lg-10">
+                        <input type="name" class="form-control" id="des" placeholder="DESCRIPTION" > 
+                    </div>
+                    </div>
+                    <div class="form-group">
+                    <label for="type" class="col-lg-2 control-label">TYPE</label>
+                    <div class="col-lg-10">
+                        <input type="name" class="form-control" id="type" placeholder="TYPE" > 
+                    </div>
+                    </div>
+                    <div class="form-group">
+                    <div class="col-lg-10 col-lg-offset-2 text-right">
+                        <button type="button" class="btn btn-default" aria-label="Close" (click)="modalRef.hide()">Cancel</button>
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                    </div>
+                    </div>
+                </fieldset>
+            </form>        
+        </div>
+</ng-template>
 <div class="row">
     <app-sidebar ></app-sidebar>
     <div class="col-sm-9">
         <div class="page-header">
             <h3>Cargo Register
-                <button  class="btn btn-success pull-right">New Cargo</button>
+                <button  class="btn btn-success pull-right" (click)="openModal(cargoregister)">New Cargo</button>
             </h3>
         </div>
         <div class="col-sm-12">

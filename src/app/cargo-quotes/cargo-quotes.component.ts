@@ -13,5 +13,4 @@ export class CargoQuotesComponent  {
   openModal(template: TemplateRef<any>) {
     this.modalRef = this.modalService.show(template);
   }
-
 }
