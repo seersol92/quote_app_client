@@ -16,6 +16,10 @@
               <a  routerLink="/register">Register</a>
             </li>
             <li *ngIf="auth.isLoggedin()" [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"><a  routerLink="/dashboard">Dashboard</a></li>
+            <li *ngIf="auth.isLoggedin()" [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"><a  routerLink="/cargo_quotes">Cargo Quotes</a></li>
+            <li *ngIf="auth.isLoggedin()" [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"><a  routerLink="/cargo_register">Cargo Register</a></li>
+            <li *ngIf="auth.isLoggedin()" [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"><a  routerLink="/comapany_register">Company Register</a></li>
+            <li *ngIf="auth.isLoggedin()" [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"><a  routerLink="/vessel_register">Vessel Register</a></li>            
             <li *ngIf="auth.isLoggedin()" [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"><a  routerLink="/profile">Profile</a></li>
             <li *ngIf="!auth.isLoggedin()" [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"><a  routerLink="/login">Login</a></li>
             <li *ngIf="auth.isLoggedin()" ><a href="#" (click)="logMeOut()">Logout</a></li>
