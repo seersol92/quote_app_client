@@ -47,9 +47,7 @@ export class CargoQuotesComponent  {
   createForm() {
     this.cargoFrom = this.fb.group({
       status: [null, Validators.compose([
-          Validators.required,
-          Validators.minLength(3),
-          Validators.maxLength(20)
+          Validators.required
         ])
       ],
       charterer: [null, Validators.compose([
@@ -72,56 +70,41 @@ export class CargoQuotesComponent  {
       ],
       grade: [null, Validators.compose([
           Validators.required,
-          Validators.minLength(3),
+          Validators.minLength(2),
           Validators.maxLength(20)
         ])
     ],
       date1: [null, Validators.compose([
-          Validators.required,
-          Validators.minLength(3),
-          Validators.maxLength(20)
+          Validators.required
         ])
       ],
       date2: [null, Validators.compose([
-          Validators.required,
-          Validators.minLength(3),
-          Validators.maxLength(20)
+          Validators.required
         ])
       ],
       load: [null, Validators.compose([
-          Validators.required,
-          Validators.minLength(3),
-          Validators.maxLength(20)
+          Validators.required
         ])
       ],
       discharge: [null, Validators.compose([
-          Validators.required,
-          Validators.minLength(3),
-          Validators.maxLength(20)
+          Validators.required
         ])
       ],
       rate_type: [null, Validators.compose([
-          Validators.required,
-          Validators.minLength(3),
-          Validators.maxLength(20)
+          Validators.required
         ])
       ],
       rate: [null, Validators.compose([
-          Validators.required,
-          Validators.minLength(3),
-          Validators.maxLength(20)
+          Validators.required
         ])
       ],
       vessel: [null, Validators.compose([
-          Validators.required,
-          Validators.minLength(3),
-          Validators.maxLength(20)
+          Validators.required
         ])
       ],
       remarks: [null, Validators.compose([
           Validators.required,
-          Validators.minLength(3),
-          Validators.maxLength(20)
+          Validators.minLength(3)
         ])
       ]
       });
@@ -144,7 +127,6 @@ export class CargoQuotesComponent  {
         vessel: this.cargoFrom.get('vessel').value,
         remarks: this.cargoFrom.get('remarks').value
     };
-    console.log(data);
     this.auth.postRequest('/cargo-quote/create', data ).subscribe(res => {
       this.modalRef.hide();
       if (!res.success) {
