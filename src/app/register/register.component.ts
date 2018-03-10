@@ -122,7 +122,7 @@ export class RegisterComponent {
         username: this.regForm.get('username').value,
         email: this.regForm.get('email').value,
         password: this.regForm.get('password').value,
-        is_admin: true
+        is_admin: false
       };
     this.auth.registerUser(user).subscribe(data => {
       if (!data.success){
