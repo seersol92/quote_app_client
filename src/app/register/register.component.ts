@@ -35,17 +35,44 @@ export class RegisterComponent {
   }
   createForm() {
     this.regForm = this.fb.group({
-      firstname: [null, Validators.compose([Validators.required, Validators.minLength(3), Validators.maxLength(20), Validators.pattern("([a-zA-Z0-9]*$)")])],
-      lastname:  [null, Validators.compose([Validators.required, Validators.minLength(3), Validators.maxLength(20), Validators.pattern("([a-zA-Z0-9]*$)")])],
-      username:  [null, Validators.compose([Validators.required, Validators.minLength(3), Validators.maxLength(20), Validators.pattern("([a-zA-Z0-9_]*$)")]), this.checkUserName.bind(this)],
-      email:     [null, Validators.compose([Validators.required, Validators.pattern(/^[_a-z0-9]+(\.[_a-z0-9]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,3})$/), Validators.minLength(8), Validators.maxLength(30)]), this.checkEmail.bind(this)],
-      password:  [null, Validators.compose([Validators.required, this.strongPassword, Validators.minLength(8), Validators.maxLength(30)])],
-      retype_password: [null, Validators.compose([Validators.required, matchOtherValidator('password')])]
+      firstname: [null, Validators.compose(
+                      [Validators.required,
+                      Validators.minLength(3),
+                      Validators.maxLength(20),
+                      Validators.pattern('([a-zA-Z0-9]*$)')])
+                ],
+      lastname:  [null, Validators.compose([
+                        Validators.required,
+                        Validators.minLength(3),
+                        Validators.maxLength(20),
+                        Validators.pattern('([a-zA-Z0-9]*$)')]
+                      )],
+      username:  [null, Validators.compose([
+                        Validators.required,
+                        Validators.minLength(3),
+                        Validators.maxLength(20),
+                        Validators.pattern('([a-zA-Z0-9_]*$)')]),
+                        this.checkUserName.bind(this)
+                  ],
+      email:     [null, Validators.compose([
+                        Validators.required,
+                        Validators.pattern(/^[_a-z0-9]+(\.[_a-z0-9]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,3})$/),
+                        Validators.minLength(8), Validators.maxLength(30)]), this.checkEmail.bind(this)],
+      password:  [null, Validators.compose([
+                        Validators.required,
+                        this.strongPassword,
+                        Validators.minLength(8),
+                        Validators.maxLength(30)])
+                ],
+      retype_password: [null, Validators.compose([
+                              Validators.required,
+                              matchOtherValidator('password')]
+                      )]
     });
   }
   strongPassword(c: FormControl) {
     console.log(c.value);
-    const regExp = new RegExp("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#)(\$%\^&\*])(?=.{8,})")
+    const regExp = new RegExp('^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#)(\$%\^&\*])(?=.{8,})');
     return regExp.test(c.value) ? null : {'strongPassword': true }
   }
   /* @type: Asynchronous
@@ -56,10 +83,10 @@ export class RegisterComponent {
   checkUserName(c: FormControl): Promise<any> | Observable<any> {
     const username = c.value;
     const promise = new Promise<any>((resolve, reject) => {
-      setTimeout(() =>{
+      setTimeout(() => {
           this.auth.checkUserName(username).subscribe( data => {
             if (data.success){
-              resolve({'checkUserName': true})
+              resolve({'checkUserName': true});
             }
               resolve(null);
           });
@@ -76,10 +103,10 @@ export class RegisterComponent {
   checkEmail(c: FormControl): Promise<any> | Observable<any> {
     const email = c.value;
     const promise = new Promise<any>((resolve, reject) => {
-      setTimeout(() =>{
+      setTimeout(() => {
           this.auth.checkEmail(email).subscribe( data => {
             if (data.success){
-              resolve({'checkEmail': true})
+              resolve({'checkEmail': true});
             }
               resolve(null);
           });
@@ -95,14 +122,15 @@ export class RegisterComponent {
         username: this.regForm.get('username').value,
         email: this.regForm.get('email').value,
         password: this.regForm.get('password').value,
-    }
+        is_admin: true
+      };
     this.auth.registerUser(user).subscribe(data => {
-      if(!data.success){
+      if (!data.success){
           this.enableForm();
           this.formProcessing = false;
           this.messageClass = 'alert alert-danger';
           this.message = data.errorObj;
-      }else{
+      }else {
           this.disableForm();
           this.messageClass = 'alert alert-success';
           this.message = 'Your Account Has Been Created :)';

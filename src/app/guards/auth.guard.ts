@@ -24,4 +24,7 @@ export class AuthGuard implements CanActivate {
     }
   }
 
+  isAdminRoute(): boolean {
+    return false;
+  }
 }

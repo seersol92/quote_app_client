@@ -16,7 +16,7 @@ export class ProfileComponent implements OnInit {
     this.auth.getProfile().subscribe(profile => {
       console.log(profile);
       this.user = profile.user.username;
-      this.email= profile.user.email
+      this.email = profile.user.email;
     });
   }
 

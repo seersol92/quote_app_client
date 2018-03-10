@@ -6,70 +6,70 @@
           </button>
         </div>
         <div class="modal-body">
-            <form class="form-horizontal">
+            <form class="form-horizontal" [formGroup] = "companyReg" (submit) = "create()">
                 <fieldset>
                     <div class="form-group">
                     <label for="name" class="col-lg-2 control-label">NAME</label>
                     <div class="col-lg-10">
-                        <input type="name" class="form-control" id="name" placeholder="NAME" > 
+                        <input type="text"  formControlName="name" class="form-control" id="name" placeholder="NAME" > 
                     </div>
                     </div>
                     <div class="form-group">
                     <label for="type" class="col-lg-2 control-label">TYPE</label>
                     <div class="col-lg-10">
-                        <input type="name" class="form-control" id="type" placeholder="TYPE" > 
+                        <input type="text"  formControlName="type" class="form-control" id="type" placeholder="TYPE" > 
                     </div>
                     </div>
                     <div class="form-group">
                     <label for="address" class="col-lg-2 control-label">ADDRESS</label>
                     <div class="col-lg-10">
-                        <input type="name" class="form-control" id="address" placeholder="ADDRESS" > 
+                        <input type="text"  formControlName="address" class="form-control" id="address" placeholder="ADDRESS" > 
                     </div>
                     </div>
                     <div class="form-group">
                     <label for="address2" class="col-lg-2 control-label">ADDRESS 2</label>
                     <div class="col-lg-10">
-                        <input type="name" class="form-control" id="address2" placeholder="ADDRESS 2" > 
+                        <input type="text"  formControlName="address2" class="form-control" id="address2" placeholder="ADDRESS 2" > 
                     </div>
                     </div>
                     <div class="form-group">
                     <label for="address3" class="col-lg-2 control-label">ADDRESS 3</label>
                     <div class="col-lg-10">
-                        <input type="name" class="form-control" id="address3" placeholder="ADDRESS 3" > 
+                        <input type="text"  formControlName="address3" class="form-control" id="address3" placeholder="ADDRESS 3" > 
                     </div>
                     </div>
                     <div class="form-group">
                     <label for="city" class="col-lg-2 control-label">CITY</label>
                     <div class="col-lg-10">
-                        <input type="name" class="form-control" id="city" placeholder="CITY" > 
+                        <input type="text"  formControlName="city" class="form-control" id="city" placeholder="CITY" > 
                     </div>
                     </div>
                     <div class="form-group">
                     <label for="state" class="col-lg-2 control-label">STATE</label>
                     <div class="col-lg-4">
-                        <input type="name" class="form-control" id="state" placeholder="STATE" > 
+                        <input type="text"  formControlName="state" class="form-control" id="state" placeholder="STATE" > 
                     </div>
                     <label for="state" class="col-lg-2 control-label">ZIP</label>
                     <div class="col-lg-4">
-                        <input type="name" class="form-control" id="zip" placeholder="ZIP" > 
+                        <input type="text"  formControlName="zip" class="form-control" id="zip" placeholder="ZIP" > 
                     </div>
                     </div>
                     <div class="form-group">
                     <label for="country" class="col-lg-2 control-label">COUNTRY</label>
                     <div class="col-lg-10">
-                        <input type="name" class="form-control" id="country" placeholder="COUNTRY" > 
+                        <input type="text"  formControlName="country" class="form-control" id="country" placeholder="COUNTRY" > 
                     </div>
                     </div>
                     <div class="form-group">
                     <label for="phone" class="col-lg-2 control-label">PHONE</label>
                     <div class="col-lg-10">
-                        <input type="name" class="form-control" id="phone" placeholder="PHONE" > 
+                        <input type="text"  formControlName="phone" class="form-control" id="phone" placeholder="PHONE" > 
                     </div>
                     </div>
                     <div class="form-group">
                     <div class="col-lg-10 col-lg-offset-2 text-right">
                         <button type="button" class="btn btn-default" aria-label="Close" (click)="modalRef.hide()">Cancel</button>
-                        <button type="submit" class="btn btn-primary">Submit</button>
+                        <button type="submit"  [disabled]="!companyReg.valid || formProcessing" class="btn btn-primary">Submit</button>
                     </div>
                     </div>
                 </fieldset>
@@ -79,63 +79,42 @@
 <div class="row">
     <div class="col-sm-12">
         <div class="page-header">
-            <h3>Company Register
+            <h3>Company Register [{{companyList?.length}}]
               <button  class="btn btn-success pull-right" (click)="openModal(newcompany)">New Company</button>
             </h3>
         </div>
         <div class="col-sm-12">
+            <div class="show-hide-messages">
+                <div [ngClass]="messageClass">
+                    {{ message }}
+                </div>
+            </div>
             <table class="table table-striped table-hover ">
                 <thead>
                     <tr>
                     <th>#</th>
-                    <th>Column heading</th>
-                    <th>Column heading</th>
-                    <th>Column heading</th>
+                    <th>Name</th>
+                    <th>Type</th>
+                    <th>Address</th>
+                    <th>Country</th>  
+                    <th>City</th>
+                    <th>State</th>
+                    <th>Zip</th>
+                    <th>Phone</th>                                                                                               
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                    <td>1</td>
-                    <td>Column content</td>
-                    <td>Column content</td>
-                    <td>Column content</td>
-                    </tr>
-                    <tr>
-                    <td>2</td>
-                    <td>Column content</td>
-                    <td>Column content</td>
-                    <td>Column content</td>
-                    </tr>
-                    <tr class="info">
-                    <td>3</td>
-                    <td>Column content</td>
-                    <td>Column content</td>
-                    <td>Column content</td>
-                    </tr>
-                    <tr class="success">
-                    <td>4</td>
-                    <td>Column content</td>
-                    <td>Column content</td>
-                    <td>Column content</td>
-                    </tr>
-                    <tr class="danger">
-                    <td>5</td>
-                    <td>Column content</td>
-                    <td>Column content</td>
-                    <td>Column content</td>
-                    </tr>
-                    <tr class="warning">
-                    <td>6</td>
-                    <td>Column content</td>
-                    <td>Column content</td>
-                    <td>Column content</td>
-                    </tr>
-                    <tr class="active">
-                    <td>7</td>
-                    <td>Column content</td>
-                    <td>Column content</td>
-                    <td>Column content</td>
-                    </tr>
+                <tr *ngFor="let item of companyList; index as i">
+                    <td>{{i+1}}</td>
+                    <td>{{item.name}}</td>
+                    <td>{{item.type}}</td>
+                    <td>{{item.address}}</td>
+                    <td>{{item.country}}</td>
+                    <td>{{item.city}}</td>
+                    <td>{{item.state}}</td>
+                    <td>{{item.zip}}</td>
+                    <td>{{item.phone}}</td>                    
+                </tr>
                 </tbody>
             </table>
         </div>

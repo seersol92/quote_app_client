@@ -34,22 +34,28 @@ export class AuthService {
   }
 
   registerUser(user) {
-    return this.http.post(this.domain+'/authentication/register', user).map(res => res.json());
+    return this.http.post(this.domain + '/authentication/register', user).map(res => res.json());
   }
   loginUser(user) {
-    return this.http.post(this.domain+'/authentication/login', user).map(res => res.json());
+    return this.http.post(this.domain + '/authentication/login', user).map(res => res.json());
   }
   checkUserName(username) {
-    return this.http.get(this.domain+'/authentication/checkUserName/'+username).map(res => res.json());
+    return this.http.get(this.domain + '/authentication/checkUserName/'+username).map(res => res.json());
   }
   checkEmail(email) {
-    return this.http.get(this.domain+'/authentication/checkEmail/'+email).map(res => res.json());
+    return this.http.get(this.domain + '/authentication/checkEmail/'+email).map(res => res.json());
+  }
+  postRequest(url, data) {
+    return this.http.post(this.domain + url, data).map(res => res.json());
+  }
+  getRequest(url, data) {
+    return this.http.get(this.domain + url, data).map(res => res.json());
   }
   /* LOGOUT USER
    */
    logout() {
      this.authToken = null;
-     this.user= null;
+     this.user = null;
      localStorage.clear();
    }
 
@@ -64,7 +70,7 @@ export class AuthService {
    */
   getProfile() {
     this.createAuthenticationHeaders();
-    return this.http.get(this.domain+'/authentication/profile', this.options).map(res => res.json());
+    return this.http.get(this.domain + '/authentication/profile', this.options).map(res => res.json());
   }
 
   /*

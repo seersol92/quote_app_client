@@ -9,14 +9,24 @@ import { FlashMessagesService } from 'angular2-flash-messages';
   styleUrls: ['./navbar.component.css']
 })
 export class NavbarComponent implements OnInit {
-
+  isAdmin: Boolean = false;
+  memberName: String = 'Welcome';
   constructor(
     private auth: AuthService,
     private router: Router,
     private _flashMessagesService: FlashMessagesService
   ) { }
   ngOnInit() {
+      this.auth.getProfile().subscribe(profile => {
+      if (profile.user) {
+        this.memberName = profile.user.username;
+        if ( profile.user.is_admin ) {
+          this.isAdmin = true;
+        }
+      }
+    });
   }
+  
   logMeOut() {
     this.auth.logout();
     // flash message will be visible for 2 second

@@ -1,0 +1,48 @@
+ <div class="modal-header">
+          <h4 class="modal-title pull-left">New Vessel</h4>
+          <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+            <form class="form-horizontal" [formGroup] = "vesselFrom" (submit) = "create()">
+                <fieldset>
+                    <div class="form-group">
+                    <label for="name" class="col-lg-2 control-label">VESSEL NAME</label>
+                    <div class="col-lg-10">
+                        <input type="text" class="form-control" formControlName="name" id="name" placeholder="VESSEL NAME" > 
+                    </div>
+                    </div>
+                    <div class="form-group">
+                    <label for="owner" class="col-lg-2 control-label">OWNER</label>
+                    <div class="col-lg-10">
+                        <input type="text" class="form-control" formControlName="owner" id="owner" placeholder="OWNER" > 
+                    </div>
+                    </div>
+                    <div class="form-group">
+                    <label for="imo" class="col-lg-2 control-label">IMO NUMBER</label>
+                    <div class="col-lg-10">
+                        <input type="text" class="form-control" formControlName="imo" id="imo" placeholder="IMO #" > 
+                    </div>
+                    </div>
+                    <div class="form-group">
+                    <label for="flag" class="col-lg-2 control-label">FLAG</label>
+                    <div class="col-lg-10">
+                        <input type="text" class="form-control" formControlName="flag" id="flag" placeholder="FLAG" > 
+                    </div>
+                    </div>
+                    <div class="form-group">
+                    <label for="type" class="col-lg-2 control-label">TYPE</label>
+                    <div class="col-lg-10">
+                        <input type="text" class="form-control" formControlName="type" id="type" placeholder="TYPE" > 
+                    </div>
+                    </div>
+                    <div class="form-group">
+                    <div class="col-lg-10 col-lg-offset-2 text-right">
+                        <button type="button" class="btn btn-default" aria-label="Close" (click)="modalRef.hide()">Cancel</button>
+                        <button type="submit" [disabled]="!vesselFrom.valid || formProcessing" class="btn btn-primary">Submit</button>
+                    </div>
+                    </div>
+                </fieldset>
+            </form>        
+        </div>

@@ -22,11 +22,15 @@ import { CargoRegisterComponent } from './cargo-register/cargo-register.componen
 import { CompanyRegisterComponent } from './company-register/company-register.component';
 import { VesselRegisterComponent } from './vessel-register/vessel-register.component';
 import {ModalModule} from 'ngx-bootstrap';
+import { ModalComponent } from './layout/common/modal/modal.component';
+import { Ng2SearchPipeModule } from 'ng2-search-filter';
+import { OrderModule } from 'ngx-order-pipe';
+
 const APP_ROUTES: Routes = [
   {
     path: '',
-    component: DashboardComponent,
-    canActivate: [AuthGuard]
+    component: LoginComponent,
+    canActivate: [NotAuthGuard]
   },
   {
     path: 'login',
@@ -95,12 +99,15 @@ const APP_ROUTES: Routes = [
     CargoQuotesComponent,
     CargoRegisterComponent,
     CompanyRegisterComponent,
-    VesselRegisterComponent
+    VesselRegisterComponent,
+    ModalComponent
   ],
   imports: [
     BrowserModule,
     FormsModule,
     HttpModule,
+    OrderModule,
+    Ng2SearchPipeModule,
     FlashMessagesModule,
     ReactiveFormsModule,
     RouterModule.forRoot(APP_ROUTES),

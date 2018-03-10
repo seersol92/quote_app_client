@@ -1,6 +1,8 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { VesselRegisterComponent } from './vessel-register.component';
+import { ModalComponent } from './layout/common/modal.component';
+
 
 describe('VesselRegisterComponent', () => {
   let component: VesselRegisterComponent;

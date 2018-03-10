@@ -1,57 +1,10 @@
 <ng-template #newvessel>
-        <div class="modal-header">
-          <h4 class="modal-title pull-left">New Vessel</h4>
-          <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-        <div class="modal-body">
-            <form class="form-horizontal">
-                <fieldset>
-                    <div class="form-group">
-                    <label for="name" class="col-lg-2 control-label">VESSEL NAME</label>
-                    <div class="col-lg-10">
-                        <input type="name" class="form-control" id="name" placeholder="VESSEL NAME" > 
-                    </div>
-                    </div>
-                    <div class="form-group">
-                    <label for="owner" class="col-lg-2 control-label">OWNER</label>
-                    <div class="col-lg-10">
-                        <input type="name" class="form-control" id="owner" placeholder="OWNER" > 
-                    </div>
-                    </div>
-                    <div class="form-group">
-                    <label for="imo" class="col-lg-2 control-label">IMO NUMBER</label>
-                    <div class="col-lg-10">
-                        <input type="name" class="form-control" id="imo" placeholder="IMO #" > 
-                    </div>
-                    </div>
-                    <div class="form-group">
-                    <label for="flag" class="col-lg-2 control-label">FLAG</label>
-                    <div class="col-lg-10">
-                        <input type="name" class="form-control" id="flag" placeholder="FLAG" > 
-                    </div>
-                    </div>
-                    <div class="form-group">
-                    <label for="type" class="col-lg-2 control-label">TYPE</label>
-                    <div class="col-lg-10">
-                        <input type="name" class="form-control" id="type" placeholder="TYPE" > 
-                    </div>
-                    </div>
-                    <div class="form-group">
-                    <div class="col-lg-10 col-lg-offset-2 text-right">
-                        <button type="button" class="btn btn-default" aria-label="Close" (click)="modalRef.hide()">Cancel</button>
-                        <button type="submit" class="btn btn-primary">Submit</button>
-                    </div>
-                    </div>
-                </fieldset>
-            </form>        
-        </div>
+       <app-modal></app-modal>
 </ng-template>
 <div class="row">
     <div class="col-sm-12">
         <div class="page-header">
-            <h3>Vessel Register
+            <h3>Vessel Register [{{vesselList?.length}}]
                 <button  class="btn btn-success pull-right " (click) = "openModal(newvessel)">New Vessel </button>
             </h3>
         </div>
@@ -60,53 +13,21 @@
                 <thead>
                     <tr>
                     <th>#</th>
-                    <th>Column heading</th>
-                    <th>Column heading</th>
-                    <th>Column heading</th>
+                    <th>Name</th>
+                    <th>Owner</th>
+                    <th>Type</th>
+                    <th>Imo #</th>
+                    <th>Flag</th>                    
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                    <td>1</td>
-                    <td>Column content</td>
-                    <td>Column content</td>
-                    <td>Column content</td>
-                    </tr>
-                    <tr>
-                    <td>2</td>
-                    <td>Column content</td>
-                    <td>Column content</td>
-                    <td>Column content</td>
-                    </tr>
-                    <tr class="info">
-                    <td>3</td>
-                    <td>Column content</td>
-                    <td>Column content</td>
-                    <td>Column content</td>
-                    </tr>
-                    <tr class="success">
-                    <td>4</td>
-                    <td>Column content</td>
-                    <td>Column content</td>
-                    <td>Column content</td>
-                    </tr>
-                    <tr class="danger">
-                    <td>5</td>
-                    <td>Column content</td>
-                    <td>Column content</td>
-                    <td>Column content</td>
-                    </tr>
-                    <tr class="warning">
-                    <td>6</td>
-                    <td>Column content</td>
-                    <td>Column content</td>
-                    <td>Column content</td>
-                    </tr>
-                    <tr class="active">
-                    <td>7</td>
-                    <td>Column content</td>
-                    <td>Column content</td>
-                    <td>Column content</td>
+                    <tr *ngFor="let item of vesselList; index as i">
+                        <td>{{i+1}}</td>
+                        <td>{{item?.name}}</td>
+                        <td>{{item?.own}}</td>
+                        <td>{{item?.type}}</td>
+                        <td>{{item?.imo}}</td>
+                        <td>{{item?.flag}}</td>
                     </tr>
                 </tbody>
             </table>
