@@ -11,7 +11,6 @@ import { RegisterComponent } from './register/register.component';
 import { ContactComponent } from './contact/contact.component';
 import { AboutComponent } from './about/about.component';
 import { AuthService } from './services/auth.service';
-import { LoggedInService } from './services/logged-in.service';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { ProfileComponent } from './profile/profile.component';
 import { FlashMessagesModule } from 'angular2-flash-messages';
@@ -23,6 +22,7 @@ import { CargoRegisterComponent } from './cargo-register/cargo-register.componen
 import { CompanyRegisterComponent } from './company-register/company-register.component';
 import { VesselRegisterComponent } from './vessel-register/vessel-register.component';
 import {ModalModule} from 'ngx-bootstrap';
+import { ModalComponent } from './layout/common/modal/modal.component';
 import { Ng2SearchPipeModule } from 'ng2-search-filter';
 import { OrderModule } from 'ngx-order-pipe';
 
@@ -99,7 +99,8 @@ const APP_ROUTES: Routes = [
     CargoQuotesComponent,
     CargoRegisterComponent,
     CompanyRegisterComponent,
-    VesselRegisterComponent
+    VesselRegisterComponent,
+    ModalComponent
   ],
   imports: [
     BrowserModule,
@@ -112,7 +113,7 @@ const APP_ROUTES: Routes = [
     RouterModule.forRoot(APP_ROUTES),
     ModalModule.forRoot()
   ],
-  providers: [AuthService, AuthGuard, NotAuthGuard, LoggedInService],
+  providers: [AuthService, AuthGuard, NotAuthGuard],
   bootstrap: [AppComponent],
   exports: [ RouterModule ],
 

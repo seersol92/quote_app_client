@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../services/auth.service';
-import { LoggedInService } from '../services/logged-in.service';
 import { Router } from '@angular/router';
 import { FlashMessagesService } from 'angular2-flash-messages';
 
@@ -10,20 +9,22 @@ import { FlashMessagesService } from 'angular2-flash-messages';
   styleUrls: ['./navbar.component.css']
 })
 export class NavbarComponent implements OnInit {
+  isAdmin: Boolean = false;
+  memberName: String = 'Welcome';
   constructor(
-    public auth: AuthService,
-    public loggedSer: LoggedInService,
+    private auth: AuthService,
     private router: Router,
     private _flashMessagesService: FlashMessagesService
-  ) {
-     this.auth.getProfile().subscribe(profile => {
-     if(profile.user) {
-      this.auth.loggedinName = profile.user.username ;
-      this.auth.isAdmin = profile.user.is_admin;
-     }
-    });
-  }
+  ) { }
   ngOnInit() {
+      this.auth.getProfile().subscribe(profile => {
+      if (profile.user) {
+        this.memberName = profile.user.username;
+        if ( profile.user.is_admin ) {
+          this.isAdmin = true;
+        }
+      }
+    });
   }
 
   logMeOut() {

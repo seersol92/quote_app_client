@@ -17,7 +17,6 @@ export class CargoQuotesComponent  {
   cargoFrom: FormGroup;
   messageClass: String = null;
   message: String = null;
-  qoute: String = '';
   cargoList = [] ;
   formProcessing: Boolean = false;
   constructor(

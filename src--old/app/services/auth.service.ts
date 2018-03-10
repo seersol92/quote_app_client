@@ -8,13 +8,10 @@ export class AuthService {
   domain = 'https://mean-app2-seersol.c9users.io:8081';
   authToken;
   user;
-  public isAdmin: Boolean = false;
-  loggedinName: String = 'welcome';
   options;
   constructor(
     private http: Http
-  ) {
-  }
+  ) { }
 
   /* only invoke this function any to attach any time
   *  with headers in order to authorize the user access
@@ -82,15 +79,4 @@ export class AuthService {
    isLoggedin() {
      return tokenNotExpired();
    }
-   
-   checkAdmin() {
-      this.getProfile().subscribe(profile => {
-     if(profile.user) {
-       if (profile.user.is_admin){
-         return true;
-       }
-     }
-   });
-   return false;
-  }
 }
