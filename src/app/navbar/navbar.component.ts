@@ -26,7 +26,7 @@ export class NavbarComponent implements OnInit {
       }
     });
   }
-  
+
   logMeOut() {
     this.auth.logout();
     // flash message will be visible for 2 second

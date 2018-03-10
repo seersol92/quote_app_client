@@ -36,6 +36,7 @@ export class CargoQuotesComponent  {
     this.key = key;
     this.reverse = !this.reverse;
   }
+
    fetchCargo() {
     this.auth.getRequest('/cargo-quote', null ).subscribe(res => {
       this.cargoList = res.data;
