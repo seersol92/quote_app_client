@@ -1,85 +1,95 @@
 <ng-template #template>
         <div class="modal-header">
-          <h4 class="modal-title pull-left">Quotes</h4>
+          <h4 class="modal-title pull-left">{{cargoModalTitleTxt}}</h4>
           <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
         <div class="modal-body">
-            <form class="form-horizontal" [formGroup] = "cargoFrom" (submit) = "create()">
+            <form class="form-horizontal" [formGroup] = "cargoFrom" (submit) = "onSubmitForm()">
                 <fieldset>
                     <div class="form-group">
                     <div class="col-lg-10 col-lg-offset-2">
                         <label>
-                            <input type="radio" name="status" formControlName="status"  value="Cargo" >
+                            <input 
+                            type="radio" 
+                            name="status" 
+                            value="Cargo"
+                            formControlName="status"
+                            [checked]="cargo.cargo_status == 'cargo'">
                             Cargo
                         </label>
                         &nbsp;&nbsp;
                         <label>
-                            <input type="radio" name="status" formControlName="status"  value="TC">
+                            <input 
+                            type="radio" 
+                            name="status" 
+                            value="TC"
+                            formControlName="status"  
+                            [checked]="cargo.cargo_status == 'tc'">
                             TC
                         </label>
                         </div>
                     </div>
                     <div class="form-group">
                     <div class="col-lg-5 col-lg-offset-2">
-                        <input type="text" formControlName="charterer" class="form-control" placeholder="CHARTERER">
+                        <input type="text" formControlName="charterer" class="form-control" [(ngModel)]="cargo.charterer" placeholder="CHARTERER">
                     </div>
                     <div class="col-lg-5 ">
-                        <input type="text" formControlName="broker" class="form-control"  placeholder="BROKER">
+                        <input type="text" formControlName="broker" class="form-control" [(ngModel)]="cargo.broker" placeholder="BROKER">
                     </div>
                     </div>
                     <div class="form-group">
                     <div class="col-lg-5 col-lg-offset-2">
-                        <input type="text" formControlName="grade" class="form-control"  placeholder="GRADE"> 
+                        <input type="text" formControlName="grade" class="form-control" [(ngModel)]="cargo.grade"  placeholder="GRADE"> 
                     </div>
                     <div class="col-lg-5 ">
-                        <input type="text" formControlName="quantity" class="form-control"  placeholder="QUANTITY">
+                        <input type="text" formControlName="quantity" class="form-control" [(ngModel)]="cargo.quantity"  placeholder="QUANTITY">
                     </div>
                     </div>
                     <div class="form-group">
                     <div class="col-lg-5 col-lg-offset-2">
-                        <input type="date" class="form-control"  formControlName="date1" placeholder="MM/DD/YYYY"> 
+                        <input type="date" class="form-control"  formControlName="date1" [(ngModel)]="cargo.date1" placeholder="MM/DD/YYYY"> 
                     </div>
                     <div class="col-lg-5 ">
-                        <input type="date" class="form-control" formControlName="date2"  placeholder="MM/DD/YYYY" >
+                        <input type="date" class="form-control" formControlName="date2" [(ngModel)]="cargo.date2"  placeholder="MM/DD/YYYY" >
                     </div>
                     </div>
                     <div class="form-group">
                     <label for="inputPassword" class="col-lg-2 control-label">LOAD</label>
                     <div class="col-lg-10">
-                        <input type="text" class="form-control" formControlName="load"  placeholder="LOAD" > 
+                        <input type="text" class="form-control" formControlName="load"  [(ngModel)]="cargo.load" placeholder="LOAD" > 
                     </div>
                     </div>
                     <div class="form-group">
                     <label for="inputPassword" class="col-lg-2 control-label">DISCHARGE</label>
                     <div class="col-lg-10">
-                        <input type="text" class="form-control" formControlName="discharge"  placeholder="DISCHARGE" >
+                        <input type="text" class="form-control" formControlName="discharge" [(ngModel)]="cargo.discharge" placeholder="DISCHARGE" >
                     </div>
                     </div>   
                     <div class="form-group">
                     <div class="col-lg-5 col-lg-offset-2">
-                        <input type="text" formControlName="rate_type" class="form-control"  placeholder="RATE TYPE"> 
+                        <input type="text" formControlName="rate_type" [(ngModel)]="cargo.rate_type" class="form-control"  placeholder="RATE TYPE"> 
                     </div>
                     <div class="col-lg-5 ">
-                        <input type="text" formControlName="rate" class="form-control"  placeholder="RATE" >
+                        <input type="text" formControlName="rate" [(ngModel)]="cargo.rate" class="form-control"  placeholder="RATE" >
                     </div>
                     </div> 
                     <div class="form-group">
                     <div class="col-lg-10 col-lg-offset-2">
-                        <input type="text" class="form-control" formControlName="vessel"  placeholder="VESSEL" >
+                        <input type="text" class="form-control" formControlName="vessel" [(ngModel)]="cargo.vessel"  placeholder="VESSEL" >
                     </div>
                     </div>     
                     <div class="form-group">
                     <label for="select" class="col-lg-2 control-label">REMARKS</label>
                     <div class="col-lg-10">
-                        <textarea formControlName="remarks" id="" class="form-control" rows="3"></textarea>
+                        <textarea formControlName="remarks" id="" class="form-control" rows="3" [(ngModel)]="cargo.remarks"></textarea>
                     </div>
                     </div>
                     <div class="form-group">
                     <div class="col-lg-10 col-lg-offset-2 text-right">
                         <button type="button" class="btn btn-default" aria-label="Close" (click)="modalRef.hide()">Cancel</button>
-                        <button type="submit" [disabled]="!cargoFrom.valid || formProcessing" class="btn btn-primary">Submit</button>
+                        <button type="submit" [disabled]="!cargoFrom.valid || formProcessing" class="btn btn-primary">{{cargoModalSaveBtnTxt}}</button>
                     </div>
                     </div>
                 </fieldset>
@@ -90,7 +100,7 @@
     <div class="col-sm-12">
         <div class="page-header">
             <h3>Cargo Quotes [{{cargoList?.length}}]
-                <button  class="btn btn-success pull-right" (click)="openModal(template)">New Quotes</button>
+                <button  class="btn btn-success pull-right" (click)="createCargoModal(template)">New Quotes</button>
             </h3>
         </div>
         <div class="col-sm-12">
@@ -100,7 +110,7 @@
                     </div>
                 </div>
                 <div class="pull-right" *ngIf="cargoList.length > 0">
-                    <input type="text" [(ngModel)]="qoute"placeholder="Search Cargo Quote">
+                    <input type="text" [(ngModel)]="qoute" placeholder="Search Cargo Quote">
                 </div>
                 <table class="table table-striped table-hover ">
                     <thead>
@@ -164,9 +174,12 @@
                         <th (click)="sort('vessel')">
                             <span class="glyphicon sort-icon" *ngIf="key =='vessel'" 
                             [ngClass]="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span>
-                            Veseel
+                            Vessel
                         </th>
-                        <th>Remarks</th>                                                                              
+                        <th>Remarks</th>
+                        <th>Added By</th>
+                        <th>Date Added</th>
+                        <th>Action</th>                                                                              
                     </tr>
                     </thead>
                     <tbody>
@@ -177,14 +190,21 @@
                         <td>{{item.broker}}</td>
                         <td>{{item.grade}}</td>
                         <td>{{item.quantity}}</td>
-                        <td>{{item.date1}}</td>
-                        <td>{{item.date2}}</td>
+                        <td>{{item?.date1.split('T')[0]}}</td>
+                        <td>{{item?.date2.split('T')[0]}}</td>
                         <td>{{item.discharge}}</td>  
                         <td>{{item.load}}</td>
                         <td>{{item.rate_type}}</td>
                         <td>{{item.rate}}</td>
                         <td>{{item.vessel}}</td>                        
                         <td>{{item.remarks}}</td>
+                        <td>{{item?.added_by}}</td>
+                        <td>{{item.dateadded.split('T')[0]}}</td>
+                        <td>
+                            <a href="javascript:void(0)" (click)="onEditCargo(i, template)" ><span class="glyphicon glyphicon-pencil info"></span></a>
+                            &nbsp;
+                            <a href="javascript:void(0)" (click)="onRemoveCargo(i, item._id)" class="danger"><span class="glyphicon glyphicon-trash"></span></a>                            
+                        </td>
                     </tr>
                     </tbody>
                 </table>

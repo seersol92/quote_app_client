@@ -15,10 +15,16 @@ import { Router } from '@angular/router';
 export class CargoQuotesComponent  {
   modalRef: BsModalRef;
   cargoFrom: FormGroup;
+  isEditForm: Boolean = false;
+  public cargoQuoteId: number;
+  cargoModalTitleTxt: String = 'Create Cargo Quote';
+  cargoModalSaveBtnTxt: String = 'Save Cargo';
   messageClass: String = null;
   message: String = null;
   qoute: String = '';
+  charterer: String = 'test';
   cargoList = [] ;
+  cargo = [];
   formProcessing: Boolean = false;
   constructor(
     private fb: FormBuilder,
@@ -28,12 +34,12 @@ export class CargoQuotesComponent  {
   ) {
     this.createForm();
     this.fetchCargo();
+    this.auth.getloggedInInfo();
    }
 
   key: String = 'status';
   reverse: Boolean = false;
   sort(key) {
-    console.log(key);
     this.key = key;
     this.reverse = !this.reverse;
   }
@@ -41,7 +47,6 @@ export class CargoQuotesComponent  {
    fetchCargo() {
     this.auth.getRequest('/cargo-quote', null ).subscribe(res => {
       this.cargoList = res.data;
-      console.log(this.cargoList);
     });
   }
 
@@ -111,8 +116,15 @@ export class CargoQuotesComponent  {
       });
   }
 
-  create() {
-    this.formProcessing = true;
+  createCargoModal(template) {
+    this.cargoModalTitleTxt = 'Create Cargo Quote';
+    this.cargoModalSaveBtnTxt = 'Save Cargo';
+    this.cargo = [];
+    this.isEditForm = false;
+    this.modalRef = this.modalService.show(template);
+  }
+
+  getFormData() {
     const data = {
         cargo_status: this.cargoFrom.get('status').value,
         charterer: this.cargoFrom.get('charterer').value,
@@ -126,9 +138,15 @@ export class CargoQuotesComponent  {
         rate_type: this.cargoFrom.get('rate_type').value,
         rate: this.cargoFrom.get('rate').value,
         vessel: this.cargoFrom.get('vessel').value,
-        remarks: this.cargoFrom.get('remarks').value
+        remarks: this.cargoFrom.get('remarks').value,
+        addedby: this.auth.loggedinName
     };
-    this.auth.postRequest('/cargo-quote/create', data ).subscribe(res => {
+    return data;
+  }
+
+  create() {
+    this.formProcessing = true;
+    this.auth.postRequest('/cargo-quote/create', this.getFormData() ).subscribe(res => {
       this.modalRef.hide();
       if (!res.success) {
           this.formProcessing = false;
@@ -146,7 +164,70 @@ export class CargoQuotesComponent  {
     });
   }
 
-  openModal(template: TemplateRef<any>) {
-    this.modalRef = this.modalService.show(template);
+  async onEditCargo(cargoIndex: number, template) {
+    this.cargo =  JSON.parse(JSON.stringify(this.cargoList[cargoIndex]));
+    if (this.cargo) {
+      this.cargoQuoteId = this.cargoList[cargoIndex]['_id'];
+      this.cargoModalTitleTxt = 'Edit Cargo';
+      this.cargoModalSaveBtnTxt = 'Update Cargo';
+      this.isEditForm = true;
+      this.modalRef = this.modalService.show(template);
+    }
   }
+
+  update () {
+    if (this.cargoQuoteId) {
+      const data = this.getFormData();
+      data['cargo_id'] = this.cargoQuoteId;
+      this.auth.postRequest('/cargo-quote/update', data ).subscribe(res => {
+        this.modalRef.hide();
+        if (!res.success) {
+          this.formProcessing = false;
+          this.messageClass = 'alert alert-danger';
+          this.message = res.message;
+        } else {
+          this.fetchCargo();
+          this.messageClass = 'alert alert-success';
+          this.message = res.message;
+        }
+      setTimeout(() => {
+        this.messageClass = '';
+        this.message = '';
+      }, 10000);
+      });
+    }
+  }
+
+  onRemoveCargo (cargoIndex: number) {
+     this.cargoQuoteId = this.cargoList[cargoIndex]['_id'];
+     if (this.cargoQuoteId) {
+       if (confirm('Are you sure to delete this Cargo Quote?') ) {
+          this.auth.postRequest('/cargo-quote/delete', {cargo_id: this.cargoQuoteId} ).subscribe(res => {
+            if (!res.success) {
+              this.formProcessing = false;
+              this.messageClass = 'alert alert-danger';
+              this.message = res.message;
+            } else {
+              this.cargoList.splice(cargoIndex, 1);
+              this.messageClass = 'alert alert-success';
+              this.message = res.message;
+            }
+          setTimeout(() => {
+            this.messageClass = '';
+            this.message = '';
+          }, 10000);
+          });
+       }
+     }
+  }
+
+  async onSubmitForm() {
+    if (!this.isEditForm) {
+      return this.create();
+    } else {
+      return this.update();
+    }
+  }
+
+
 }

@@ -17,7 +17,7 @@ export class NavbarComponent implements OnInit {
     private _flashMessagesService: FlashMessagesService
   ) {
      this.auth.getProfile().subscribe(profile => {
-     if(profile.user) {
+     if (profile.user) {
       this.auth.loggedinName = profile.user.username ;
       this.auth.isAdmin = profile.user.is_admin;
      }

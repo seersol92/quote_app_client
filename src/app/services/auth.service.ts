@@ -10,6 +10,7 @@ export class AuthService {
   user;
   public isAdmin: Boolean = false;
   loggedinName: String = 'welcome';
+  loggedInId: String = '';
   options;
   constructor(
     private http: Http
@@ -82,11 +83,21 @@ export class AuthService {
    isLoggedin() {
      return tokenNotExpired();
    }
-   
+
+   getloggedInInfo() {
+    this.getProfile().subscribe(profile => {
+      if (profile.user) {
+       this.loggedinName = profile.user.username ;
+       this.isAdmin = profile.user.is_admin;
+       this.loggedInId = profile.user._id;
+      }
+     });
+   }
+
    checkAdmin() {
       this.getProfile().subscribe(profile => {
-     if(profile.user) {
-       if (profile.user.is_admin){
+     if (profile.user) {
+       if (profile.user.is_admin) {
          return true;
        }
      }

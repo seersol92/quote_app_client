@@ -23,3 +23,12 @@ html {
     font-size: 28px !important;
     font-weight: bold !important;
   }
+
+  .danger {
+    color: #d20a0a;
+  }
+
+  .danger:hover, .danger:focus {
+    color: #ff051c;
+  }
+  
