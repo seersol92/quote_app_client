@@ -1,7 +1,11 @@
 import { Injectable } from '@angular/core';
 import { Headers, Http, RequestOptions } from '@angular/http';
-import 'rxjs/add/operator/map';
 import { tokenNotExpired } from 'angular2-jwt';
+import { Observable } from 'rxjs/Observable';
+import 'rxjs/add/operator/map';
+import 'rxjs/add/operator/catch';
+import 'rxjs/add/observable/throw';
+
 
 @Injectable()
 export class AuthService {
@@ -38,22 +42,34 @@ export class AuthService {
   }
 
   registerUser(user) {
-    return this.http.post(this.domain + '/authentication/register', user).map(res => res.json());
+    return this.http.post(this.domain + '/authentication/register', user)
+    .map(res => res.json())
+    .catch(this.handleError);
   }
   loginUser(user) {
-    return this.http.post(this.domain + '/authentication/login', user).map(res => res.json());
+    return this.http.post(this.domain + '/authentication/login', user)
+    .map(res => res.json())
+    .catch(this.handleError);
   }
   checkUserName(username) {
-    return this.http.get(this.domain + '/authentication/checkUserName/'+username).map(res => res.json());
+    return this.http.get(this.domain + '/authentication/checkUserName/' + username)
+    .map(res => res.json())
+    .catch(this.handleError);
   }
   checkEmail(email) {
-    return this.http.get(this.domain + '/authentication/checkEmail/'+email).map(res => res.json());
+    return this.http.get(this.domain + '/authentication/checkEmail/' + email)
+    .map(res => res.json())
+    .catch(this.handleError);
   }
   postRequest(url, data) {
-    return this.http.post(this.domain + url, data).map(res => res.json());
+    return this.http.post(this.domain + url, data)
+    .map(res => res.json())
+    .catch(this.handleError);
   }
   getRequest(url, data) {
-    return this.http.get(this.domain + url, data).map(res => res.json());
+    return this.http.get(this.domain + url, data)
+    .map(res => res.json())
+    .catch(this.handleError);
   }
   /* LOGOUT USER
    */
@@ -72,9 +88,17 @@ export class AuthService {
   /* @type: Get Profile of authenticated loggedin user
    *
    */
-  getProfile() {
+  getProfile(): Observable<any> {
     this.createAuthenticationHeaders();
-    return this.http.get(this.domain + '/authentication/profile', this.options).map(res => res.json());
+    return this.http.get(this.domain + '/authentication/profile', this.options)
+    .map(res => res.json())
+    .catch(this.handleError);
+  }
+
+  public handleError (error: Response | any) {
+    if (error.status === 0 ) {  // catch server error
+          return Observable.throw(error);
+    }
   }
 
   /*

@@ -1,4 +1,4 @@
-import { Component, TemplateRef } from '@angular/core';
+import { Component, TemplateRef, Pipe, PipeTransform } from '@angular/core';
 import { BsModalService } from 'ngx-bootstrap/modal';
 import { BsModalRef } from 'ngx-bootstrap/modal/bs-modal-ref.service';
 import {AbstractControl} from '@angular/forms';
@@ -6,6 +6,7 @@ import { FormControl, FormGroup, FormBuilder, Validators } from '@angular/forms'
 import { AuthService } from '../services/auth.service';
 import { Observable } from 'rxjs/Observable';
 import { Router } from '@angular/router';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-cargo-quotes',
@@ -43,7 +44,11 @@ export class CargoQuotesComponent  {
     this.key = key;
     this.reverse = !this.reverse;
   }
-
+  transform(value: string) {
+     const datePipe = new DatePipe('en-US');
+     value = datePipe.transform(value, 'yyyy-MM-dd');
+     return value;
+ }
    fetchCargo() {
     this.auth.getRequest('/cargo-quote', null ).subscribe(res => {
       this.cargoList = res.data;
@@ -52,10 +57,7 @@ export class CargoQuotesComponent  {
 
   createForm() {
     this.cargoFrom = this.fb.group({
-      status: [null, Validators.compose([
-          Validators.required
-        ])
-      ],
+      status: [null],
       charterer: [null, Validators.compose([
           Validators.required,
           Validators.minLength(3),
@@ -167,11 +169,13 @@ export class CargoQuotesComponent  {
   async onEditCargo(cargoIndex: number, template) {
     this.cargo =  JSON.parse(JSON.stringify(this.cargoList[cargoIndex]));
     if (this.cargo) {
-      this.cargoQuoteId = this.cargoList[cargoIndex]['_id'];
-      this.cargoModalTitleTxt = 'Edit Cargo';
-      this.cargoModalSaveBtnTxt = 'Update Cargo';
-      this.isEditForm = true;
-      this.modalRef = this.modalService.show(template);
+        this.cargo['date1'] = this.transform(this.cargo['date1']);
+        this.cargo['date2'] = this.transform(this.cargo['date2']);
+        this.cargoQuoteId = this.cargoList[cargoIndex]['_id'];
+        this.cargoModalTitleTxt = 'Edit Cargo';
+        this.cargoModalSaveBtnTxt = 'Update Cargo';
+        this.isEditForm = true;
+        this.modalRef = this.modalService.show(template);
     }
   }
 

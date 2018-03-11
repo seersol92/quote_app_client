@@ -16,7 +16,8 @@
                             name="status" 
                             value="Cargo"
                             formControlName="status"
-                            [checked]="cargo.cargo_status == 'cargo'">
+                            [checked]="cargo.cargo_status === 'cargo'"
+                            >
                             Cargo
                         </label>
                         &nbsp;&nbsp;
@@ -26,7 +27,7 @@
                             name="status" 
                             value="TC"
                             formControlName="status"  
-                            [checked]="cargo.cargo_status == 'tc'">
+                            [checked]="cargo.cargo_status === 'tc'">
                             TC
                         </label>
                         </div>
@@ -190,8 +191,8 @@
                         <td>{{item.broker}}</td>
                         <td>{{item.grade}}</td>
                         <td>{{item.quantity}}</td>
-                        <td>{{item?.date1.split('T')[0]}}</td>
-                        <td>{{item?.date2.split('T')[0]}}</td>
+                        <td>{{ item.date1 | date:'dd/MM/yyyy' }}</td>
+                        <td>{{ item.date2 | date:'dd/MM/yyyy' }}</td>
                         <td>{{item.discharge}}</td>  
                         <td>{{item.load}}</td>
                         <td>{{item.rate_type}}</td>
@@ -199,7 +200,7 @@
                         <td>{{item.vessel}}</td>                        
                         <td>{{item.remarks}}</td>
                         <td>{{item?.added_by}}</td>
-                        <td>{{item.dateadded.split('T')[0]}}</td>
+                        <td>{{ item.dateadded | date:'dd/MM/yyyy' }}</td>
                         <td>
                             <a href="javascript:void(0)" (click)="onEditCargo(i, template)" ><span class="glyphicon glyphicon-pencil info"></span></a>
                             &nbsp;

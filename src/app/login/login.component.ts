@@ -2,9 +2,13 @@ import { Component, OnInit } from '@angular/core';
 import { AbstractControl } from '@angular/forms';
 import { FormControl, FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { AuthService } from '../services/auth.service';
-import { Observable } from 'rxjs/Observable';
 import { Router } from '@angular/router';
 import { AuthGuard } from '../guards/auth.guard';
+import { Observable } from 'rxjs/Observable';
+import 'rxjs/add/operator/map';
+import 'rxjs/add/operator/catch';
+import 'rxjs/add/observable/throw';
+import { error } from 'util';
 
 @Component({
   selector: 'app-login',
@@ -28,7 +32,8 @@ export class LoginComponent implements OnInit {
         password:  this.loginForm.get('password').value
     };
     this.formProcessing = true;
-    this.auth.loginUser(user).subscribe(data => {
+    this.auth.loginUser(user).subscribe(
+      data => {
       if (!data.success) {
           this.formProcessing = false;
           this.loginError = true;
@@ -51,7 +56,12 @@ export class LoginComponent implements OnInit {
             }
           }, 2000); // redirect after 2 sec
       }
-    });
+    },
+    err => {
+      this.messageClass = 'alert alert-danger';
+      this.message = 'Unable to connect to the server. Please check your network connection!!';
+    }
+  );
   }
   createLoginForm() {
     this.loginForm = this.fb.group({
