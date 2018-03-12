@@ -24,6 +24,10 @@ html {
     font-weight: bold !important;
   }
 
+  .header-btn{
+    top: 15px;
+    left: 16px;
+  }
   .danger {
     color: #d20a0a;
   }
