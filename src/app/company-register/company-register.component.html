@@ -1,12 +1,12 @@
 <ng-template #newcompany>
         <div class="modal-header">
-          <h4 class="modal-title pull-left">New Company</h4>
+          <h4 class="modal-title pull-left">{{companyModalTitleTxt}}</h4>
           <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
         <div class="modal-body">
-            <form class="form-horizontal" [formGroup] = "companyReg" (submit) = "create()">
+            <form class="form-horizontal" [formGroup] = "companyReg" (submit) = "onSubmit()">
                 <fieldset>
                     <div class="form-group">
                     <label for="name" class="col-lg-2 control-label">NAME</label>
@@ -69,7 +69,7 @@
                     <div class="form-group">
                     <div class="col-lg-10 col-lg-offset-2 text-right">
                         <button type="button" class="btn btn-default" aria-label="Close" (click)="modalRef.hide()">Cancel</button>
-                        <button type="submit"  [disabled]="!companyReg.valid || formProcessing" class="btn btn-primary">Submit</button>
+                        <button type="submit"  [disabled]="!companyReg.valid || formProcessing" class="btn btn-primary">{{companyModalSaveBtnTxt}}</button>
                     </div>
                     </div>
                 </fieldset>
@@ -100,7 +100,10 @@
                     <th>City</th>
                     <th>State</th>
                     <th>Zip</th>
-                    <th>Phone</th>                                                                                               
+                    <th>Phone</th>
+                    <th>Added By</th>
+                    <th>Date Added</th>
+                    <th>Action</th>                                                                                                 
                     </tr>
                 </thead>
                 <tbody>
@@ -113,7 +116,14 @@
                     <td>{{item.city}}</td>
                     <td>{{item.state}}</td>
                     <td>{{item.zip}}</td>
-                    <td>{{item.phone}}</td>                    
+                    <td>{{item.phone}}</td> 
+                    <td>----</td>
+                    <td>{{ item.dateadded | date:'dd/MM/yyyy' }}</td>
+                    <td>
+                        <a href="javascript:void(0)" (click)="onEditCompany(i, newcompany)" ><span class="glyphicon glyphicon-pencil info"></span></a>
+                        &nbsp;
+                        <a href="javascript:void(0)" (click)="onRemoveCompany(i, item._id)" class="danger"><span class="glyphicon glyphicon-trash"></span></a>                            
+                    </td>                   
                 </tr>
                 </tbody>
             </table>

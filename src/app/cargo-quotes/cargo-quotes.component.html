@@ -9,15 +9,15 @@
         </div>
         <div class="modal-body">
             <form class="form-horizontal" [formGroup] = "cargoFrom" (submit) = "onSubmitForm()">
+                <!--<input type="file" accept=".csv" (change)="convertFile($event)" /> -->  
                 <fieldset>
                     <div class="form-group">
                     <div class="col-lg-10 col-lg-offset-2">
                         <label>
                             <input 
                             type="radio" 
-                            name="status" 
-                            value="Cargo"
-                            formControlName="status"
+                            value="cargo"
+                            formControlName="cargo_status"
                             [checked]="cargo.cargo_status === 'cargo'"
                             >
                             Cargo
@@ -26,10 +26,10 @@
                         <label>
                             <input 
                             type="radio" 
-                            name="status" 
-                            value="TC"
-                            formControlName="status"  
-                            [checked]="cargo.cargo_status === 'tc'">
+                            value="tc"
+                            formControlName="cargo_status"  
+                            [checked]="cargo.cargo_status === 'tc'"
+                            >
                             TC
                         </label>
                         </div>
@@ -108,11 +108,13 @@
         <div class="col-lg-4  col-xs-4 header-btn">
             <button  class="btn btn-success pull-right" (click)="createCargoModal(template)">New Quotes</button>
         </div>
+</div>
+    <div class="row">
+    <div class="col-lg-12  col-xs-12">
         <div class="show-hide-messages">
             <div [ngClass]="messageClass">{{ message }}</div>
         </div>
     </div>
-    <div class="row">
     <div class="col-lg-2 col-lg-offset-5  col-xs-12 pull-right">
         <div  *ngIf="cargoList?.length > 0">
             <input type="text" [(ngModel)]="qoute" placeholder="Search Cargo Quote" 

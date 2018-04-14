@@ -34,12 +34,12 @@ export class LoginComponent implements OnInit {
     this.formProcessing = true;
     this.auth.loginUser(user).subscribe(
       data => {
+         this.formProcessing = false;
       if (!data.success) {
-          this.formProcessing = false;
           this.loginError = true;
           this.messageClass = 'alert alert-danger';
           this.message = data.message;
-      }else {
+      } else {
           this.messageClass = 'alert alert-success';
           this.message = 'Logged In Redirecting...';
           this.auth.storeUserData(data.token, data.user);

@@ -25,6 +25,7 @@ import { VesselRegisterComponent } from './vessel-register/vessel-register.compo
 import {ModalModule} from 'ngx-bootstrap';
 import { Ng2SearchPipeModule } from 'ng2-search-filter';
 import { OrderModule } from 'ngx-order-pipe';
+import { UserComponent } from './user/user.component';
 
 const APP_ROUTES: Routes = [
   {
@@ -78,6 +79,11 @@ const APP_ROUTES: Routes = [
     canActivate: [AuthGuard]
   },
   {
+    path: 'user-management',
+    component: UserComponent,
+    canActivate: [AuthGuard]
+  },
+  {
     path: 'profile',
     component: ProfileComponent,
     canActivate: [AuthGuard]
@@ -99,7 +105,8 @@ const APP_ROUTES: Routes = [
     CargoQuotesComponent,
     CargoRegisterComponent,
     CompanyRegisterComponent,
-    VesselRegisterComponent
+    VesselRegisterComponent,
+    UserComponent
   ],
   imports: [
     BrowserModule,

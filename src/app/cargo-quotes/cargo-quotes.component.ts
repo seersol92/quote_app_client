@@ -1,4 +1,4 @@
-import { Component, TemplateRef, Pipe, PipeTransform } from '@angular/core';
+import { Component, TemplateRef, Pipe, PipeTransform, OnInit } from '@angular/core';
 import { BsModalService } from 'ngx-bootstrap/modal';
 import { BsModalRef } from 'ngx-bootstrap/modal/bs-modal-ref.service';
 import {AbstractControl} from '@angular/forms';
@@ -13,7 +13,7 @@ import { DatePipe } from '@angular/common';
   templateUrl: './cargo-quotes.component.html',
   styleUrls: ['./cargo-quotes.component.css']
 })
-export class CargoQuotesComponent  {
+export class CargoQuotesComponent implements OnInit {
   modalRef: BsModalRef;
   cargoFrom: FormGroup;
   isEditForm: Boolean = false;
@@ -27,6 +27,12 @@ export class CargoQuotesComponent  {
   cargoList = [] ;
   cargo = [];
   formProcessing: Boolean = false;
+  fileReaded: any;
+  key: String = 'status';
+  reverse: Boolean = false;
+  ngOnInit() {
+
+  }
   constructor(
     private fb: FormBuilder,
     private auth: AuthService,
@@ -38,8 +44,6 @@ export class CargoQuotesComponent  {
     this.auth.getloggedInInfo();
    }
 
-  key: String = 'status';
-  reverse: Boolean = false;
   sort(key) {
     this.key = key;
     this.reverse = !this.reverse;
@@ -49,15 +53,25 @@ export class CargoQuotesComponent  {
      value = datePipe.transform(value, 'yyyy-MM-dd');
      return value;
  }
-   fetchCargo() {
-    this.auth.getRequest('/cargo-quote', null ).subscribe(res => {
+
+  async fetchCargo() {
+    await this.auth.getRequest('/cargo-quote', null ).subscribe(res => {
+    if (!res.success) {
+      this.formProcessing = false;
+      this.messageClass = 'alert alert-danger';
+      this.message = 'Something went wrong!!';
+    } else {
       this.cargoList = res.data;
+    }
+    setTimeout(() => {
+      this.messageClass = '';
+      this.message = '';
+    }, 10000);
     });
   }
-
   createForm() {
     this.cargoFrom = this.fb.group({
-      status: [null],
+      cargo_status: [null],
       charterer: [null, Validators.compose([
           Validators.required,
           Validators.minLength(3),
@@ -128,7 +142,7 @@ export class CargoQuotesComponent  {
 
   getFormData() {
     const data = {
-        cargo_status: this.cargoFrom.get('status').value,
+        cargo_status: this.cargoFrom.get('cargo_status').value,
         charterer: this.cargoFrom.get('charterer').value,
         broker: this.cargoFrom.get('broker').value,
         grade:  this.cargoFrom.get('grade').value,
@@ -166,7 +180,7 @@ export class CargoQuotesComponent  {
     });
   }
 
-  async onEditCargo(cargoIndex: number, template) {
+  onEditCargo(cargoIndex: number, template) {
     this.cargo =  JSON.parse(JSON.stringify(this.cargoList[cargoIndex]));
     if (this.cargo) {
         this.cargo['date1'] = this.transform(this.cargo['date1']);
@@ -180,25 +194,29 @@ export class CargoQuotesComponent  {
   }
 
   update () {
-    if (this.cargoQuoteId) {
-      const data = this.getFormData();
-      data['cargo_id'] = this.cargoQuoteId;
-      this.auth.postRequest('/cargo-quote/update', data ).subscribe(res => {
-        this.modalRef.hide();
-        if (!res.success) {
-          this.formProcessing = false;
-          this.messageClass = 'alert alert-danger';
-          this.message = res.message;
-        } else {
-          this.fetchCargo();
-          this.messageClass = 'alert alert-success';
-          this.message = res.message;
-        }
-      setTimeout(() => {
-        this.messageClass = '';
-        this.message = '';
-      }, 10000);
-      });
+    try {
+      if (this.cargoQuoteId) {
+        const data = this.getFormData();
+        data['cargo_id'] = this.cargoQuoteId;
+        this.auth.postRequest('/cargo-quote/update', data ).subscribe(res => {
+          this.modalRef.hide();
+          if (!res.success) {
+            this.formProcessing = false;
+            this.messageClass = 'alert alert-danger';
+            this.message = res.message;
+          } else {
+            this.fetchCargo();
+            this.messageClass = 'alert alert-success';
+            this.message = res.message;
+          }
+        setTimeout(() => {
+          this.messageClass = '';
+          this.message = '';
+        }, 10000);
+        });
+      }
+    } catch (e) {
+      console.log('Error:', e);
     }
   }
 
@@ -233,5 +251,30 @@ export class CargoQuotesComponent  {
     }
   }
 
-
+  convertFile(csv: any) {
+    this.fileReaded = csv.target.files[0];
+    const reader: FileReader = new FileReader();
+    reader.readAsText(this.fileReaded);
+    reader.onload = (e) => {
+    const csv: string = reader.result;
+    const allTextLines = csv.split(/\r|\n|\r/);
+    const headers = allTextLines[0].split(',');
+    const lines = [];
+    for (let i = 0; i < allTextLines.length; i++) {
+    // split content based on comma
+    const data = allTextLines[i].split(',');
+    if (data.length === headers.length) {
+      const tarr = [];
+    for (let j = 0; j < headers.length; j++) {
+    tarr.push(data[j]);
+    }
+    // log each row to see output
+    console.log(tarr);
+    lines.push(tarr);
+    }
+    }
+    // all rows in the csv file
+    console.log('>>>>>>>>>>>>>>>>>', lines);
+    };
+}
 }
