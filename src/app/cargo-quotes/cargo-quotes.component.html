@@ -101,13 +101,66 @@
     </div>
 </div>
 </ng-template>
+<ng-template #importTemplate>
+<div class="modal-header">
+<h4 class="modal-title pull-left">Import Quotes</h4>
+<button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+    <span aria-hidden="true">&times;</span>
+</button>
+</div>
+<div class="modal-body">
+    <div class="row">
+        <div class="col-lg-10 col-lg-offset-2">
+            <div class="alert alert-dismissible alert-success "
+            *ngIf="allowImport">
+            <strong>Click Import Button To Import Your Cargo Quotes.</strong>
+           </div>
+           <span class="pull-right">
+                <a href="assets/csv_samples/sample_import_cargo_quotes.csv"
+                   download="sample_sheet_cargo_quotes.csv"
+                   target="_SELF">
+                Download csv sample sheet?
+                </a>
+            </span>
+        </div>
+    </div>
+    <div class="clearfix"></div>
+    <form class="form-horizontal" role="form" (submit) = "onImport()">
+        <fieldset>
+            <div class="form-group">
+                <label for="grade" class="col-lg-2 control-label">File</label>
+                <div class="col-lg-10">
+                <input type="file" 
+                class="form-control" 
+                (change)="fileChangeListener($event)" 
+                accept=".csv"
+                value={{selectedImageFile}}
+                style="padding: 0px 0px;" 
+                />
+                </div>
+            </div>
+            <div class="clearfix"></div>
+            <div class="form-group">
+            <div class="col-lg-10 col-lg-offset-2 text-right">
+                <button type="button" class="btn btn-default" aria-label="Close" (click)="modalRef.hide()">Cancel</button>
+                <button type="submit" [disabled]="!allowImport || formProcessing" class="btn btn-primary">Import</button>
+            </div>
+            </div>
+        </fieldset>
+    </form>        
+</div>
+</ng-template>
 <div class="row page-header">
-        <div class="col-lg-8  col-xs-8">
-            <h3>Cargo Quotes [{{cargoList?.length}}]</h3>
-        </div>
-        <div class="col-lg-4  col-xs-4 header-btn">
-            <button  class="btn btn-success pull-right" (click)="createCargoModal(template)">New Quotes</button>
-        </div>
+    <div class="col-lg-8  col-xs-8">
+        <h3>Cargo Quotes [{{cargoList?.length}}]</h3>
+    </div>
+    <div class="col-lg-4  col-xs-4 header-btn">
+        <span class="pull-right">
+        <button  class="btn btn-primary" (click)="exportQuotes()" [disabled]='!allowExport'> Export Quotes</button>
+        <button  class="btn btn-info"    (click)="importQuote(importTemplate)"> Import Quotes</button>
+        <button  class="btn btn-success" (click)="createCargoModal(template)" >New Quote</button>        
+        </span>
+</div>
 </div>
     <div class="row">
     <div class="col-lg-12  col-xs-12">

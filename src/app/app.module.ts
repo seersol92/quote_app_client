@@ -11,6 +11,7 @@ import { RegisterComponent } from './register/register.component';
 import { ContactComponent } from './contact/contact.component';
 import { AboutComponent } from './about/about.component';
 import { AuthService } from './services/auth.service';
+import { FileUtilService } from './services/file.util.service';
 import { LoggedInService } from './services/logged-in.service';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { ProfileComponent } from './profile/profile.component';
@@ -26,6 +27,9 @@ import {ModalModule} from 'ngx-bootstrap';
 import { Ng2SearchPipeModule } from 'ng2-search-filter';
 import { OrderModule } from 'ngx-order-pipe';
 import { UserComponent } from './user/user.component';
+import { Constants } from './common/file.constants';
+
+
 
 const APP_ROUTES: Routes = [
   {
@@ -117,9 +121,9 @@ const APP_ROUTES: Routes = [
     FlashMessagesModule,
     ReactiveFormsModule,
     RouterModule.forRoot(APP_ROUTES),
-    ModalModule.forRoot()
+    ModalModule.forRoot(),
   ],
-  providers: [AuthService, AuthGuard, NotAuthGuard, LoggedInService],
+  providers: [AuthService, AuthGuard, NotAuthGuard, LoggedInService, FileUtilService],
   bootstrap: [AppComponent],
   exports: [ RouterModule ],
 

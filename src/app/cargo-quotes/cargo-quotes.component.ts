@@ -7,6 +7,9 @@ import { AuthService } from '../services/auth.service';
 import { Observable } from 'rxjs/Observable';
 import { Router } from '@angular/router';
 import { DatePipe } from '@angular/common';
+import { FileUtilService } from './../services/file.util.service';
+import { Constants } from './../common/file.constants';
+
 
 @Component({
   selector: 'app-cargo-quotes',
@@ -14,35 +17,173 @@ import { DatePipe } from '@angular/common';
   styleUrls: ['./cargo-quotes.component.css']
 })
 export class CargoQuotesComponent implements OnInit {
+  public cargoQuoteId: number;
   modalRef: BsModalRef;
   cargoFrom: FormGroup;
-  isEditForm: Boolean = false;
-  public cargoQuoteId: number;
-  cargoModalTitleTxt: String = 'Create Cargo Quote';
-  cargoModalSaveBtnTxt: String = 'Save Cargo';
+  cargoModalTitleTxt: String = null;
+  cargoModalSaveBtnTxt: String = null;
   messageClass: String = null;
   message: String = null;
-  qoute: String = '';
-  charterer: String = 'test';
-  cargoList = [] ;
-  cargo = [];
+  qoute: String = null;
+  isEditForm: Boolean = false;
   formProcessing: Boolean = false;
-  fileReaded: any;
-  key: String = 'status';
+  allowImport: Boolean = false;
+  allowExport: Boolean = false;
   reverse: Boolean = false;
-  ngOnInit() {
-
+  key: String = 'status';
+  csvRecords = [];
+  cargoList = [] ;
+  jsonQuote = [];
+  cargo = [];
+ async ngOnInit() {
+    await this.auth.getProfile().subscribe(profile => {
+      if (profile.user) {
+       this.auth.loggedinName = profile.user.username;
+       this.auth.isAdmin = profile.user.is_admin;
+      }
+    });
   }
   constructor(
     private fb: FormBuilder,
     private auth: AuthService,
     private router: Router,
-    private modalService: BsModalService
-  ) {
+    private modalService: BsModalService,
+    private _fileUtil: FileUtilService  ) {
     this.createForm();
     this.fetchCargo();
-    this.auth.getloggedInInfo();
    }
+
+    // METHOD CALLED WHEN CSV FILE IS IMPORTED
+  fileChangeListener($event): void {
+    const text = [];
+    const target = $event.target || $event.srcElement;
+    const files = target.files;
+    if (Constants.validateHeaderAndRecordLengthFlag) {
+      if (!this._fileUtil.isCSVFile(files[0])) {
+        alert('Please import valid .csv file.');
+      }
+    }
+    const input = $event.target;
+    const reader = new FileReader();
+    reader.readAsText(input.files[0]);
+
+    reader.onload = (data) => {
+      const csvData = reader.result;
+      const csvRecordsArray = csvData.split(/\r\n|\n/);
+
+      let headerLength = -1;
+      if (Constants.isHeaderPresentFlag) {
+        const headersRow = this._fileUtil.getHeaderArray(csvRecordsArray, Constants.tokenDelimeter);
+        headerLength = headersRow.length;
+      }
+
+      this.csvRecords = this._fileUtil.getDataRecordsArrayFromCSVFile(csvRecordsArray,
+          headerLength, Constants.validateHeaderAndRecordLengthFlag, Constants.tokenDelimeter);
+      this.csvRecords.shift(); // remove header
+      this.csvRecords.pop(); // remove last row
+      if ( this.csvRecords == null || this.csvRecords.length === 0) {
+        alert('No Records Found To Be Imported!!');
+      } else {
+        this.allowImport = true;
+      }
+    },
+    reader.onerror = function () {
+      alert('Unable to read ' + input.files[0]);
+    };
+  }
+
+  onImport () {
+    this.formProcessing = true;
+    if ( this.csvRecords !== null || this.csvRecords.length > 0 ) {
+      const data = {
+        'imported_quotes': this.csvRecords,
+        'imported_by': this.auth.loggedinName
+      };
+      console.log(data);
+      this.auth.postRequest('/cargo-quote/import-quotes', data ).subscribe(res => {
+      this.csvRecords = [];
+      this.modalRef.hide();
+      this.formProcessing = false;
+      if (!res.success) {
+          this.messageClass = 'alert alert-danger';
+          this.message = res.message;
+      } else {
+          this.fetchCargo();
+          this.messageClass = 'alert alert-success';
+          this.message = res.message;
+      }
+      setTimeout(() => {
+        this.messageClass = '';
+        this.message = '';
+      }, 10000);
+      });
+    } else {
+      alert('No Record Found To Be Imported!!');
+    }
+  }
+
+  getQuotesToJson () {
+    const datePipe = new DatePipe('en-US');
+    if (this.cargoList !== null || this.cargoList.length > 0) {
+      for (let i = 0; i < this.cargoList.length; i++) {
+      this.jsonQuote.push({
+        'No#' : (i + 1),
+        cargo_status: this.cargoList[i].cargo_status,
+        charterer: this.cargoList[i].charterer,
+        broker: this.cargoList[i].broker,
+        quantity: this.cargoList[i].quantity,
+        grade: this.cargoList[i].grade,
+        date1:  datePipe.transform(this.cargoList[i].date1, 'dd/MM/yyyy'),
+        date2:  datePipe.transform(this.cargoList[i].date2, 'dd/MM/yyyy'),
+        load: this.cargoList[i].load,
+        discharge: this.cargoList[i].discharge,
+        rate_type: this.cargoList[i].rate_type,
+        rate: this.cargoList[i].rate,
+        vessel: this.cargoList[i].vessel,
+        remarks: this.cargoList[i].remarks,
+       date_added: datePipe.transform(this.cargoList[i].dateadded, 'dd/MM/yyyy'),
+        added_by: this.cargoList[i].added_by
+      });
+      }
+      return this.jsonQuote;
+    } else {
+      alert('No Data Found To Be Exported!!');
+    }
+  }
+  exportQuotes () {
+    const date = new Date().toLocaleDateString();
+    const csvData = this.ConvertToCSV(this.getQuotesToJson());
+    const a = document.createElement('a');
+    a.setAttribute('style', 'display:none;');
+    document.body.appendChild(a);
+    const blob = new Blob([csvData], { type: 'text/csv' });
+    const url = window.URL.createObjectURL(blob);
+    a.href = url;
+    a.download = 'Cargo_quotes_' + date + '.csv';
+    a.click();
+  }
+
+  ConvertToCSV(objArray) {
+    const array = typeof objArray !== 'object' ? JSON.parse(objArray) : objArray;
+    let str = '';
+    let row = '';
+    for (var index in objArray[0]) {
+        row += index + ',';
+      }
+    row = row.slice(0, -1);
+    // append Label row with line break
+    str += row + '\r\n';
+
+    for (let i = 0; i < array.length; i++) {
+        let line = '';
+        for (var index in array[i]) {
+            if (line !== '') line += ','
+            line += array[i][index];
+        }
+        str += line + '\r\n';
+    }
+    return str;
+}
 
   sort(key) {
     this.key = key;
@@ -61,6 +202,7 @@ export class CargoQuotesComponent implements OnInit {
       this.messageClass = 'alert alert-danger';
       this.message = 'Something went wrong!!';
     } else {
+      this.allowExport = true;
       this.cargoList = res.data;
     }
     setTimeout(() => {
@@ -251,30 +393,9 @@ export class CargoQuotesComponent implements OnInit {
     }
   }
 
-  convertFile(csv: any) {
-    this.fileReaded = csv.target.files[0];
-    const reader: FileReader = new FileReader();
-    reader.readAsText(this.fileReaded);
-    reader.onload = (e) => {
-    const csv: string = reader.result;
-    const allTextLines = csv.split(/\r|\n|\r/);
-    const headers = allTextLines[0].split(',');
-    const lines = [];
-    for (let i = 0; i < allTextLines.length; i++) {
-    // split content based on comma
-    const data = allTextLines[i].split(',');
-    if (data.length === headers.length) {
-      const tarr = [];
-    for (let j = 0; j < headers.length; j++) {
-    tarr.push(data[j]);
-    }
-    // log each row to see output
-    console.log(tarr);
-    lines.push(tarr);
-    }
-    }
-    // all rows in the csv file
-    console.log('>>>>>>>>>>>>>>>>>', lines);
-    };
-}
+  importQuote(template: string) {
+    this.allowImport = false;
+    this.csvRecords = [];
+    this.modalRef = this.modalService.show(template);
+  }
 }
