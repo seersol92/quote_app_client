@@ -23,7 +23,7 @@ export class ChatService {
 
   connect(username: string, callback: Function = () =>  {}): void {
     // initialize the connection
-    this.socket = io('http://localhost:3000', { transports: ['websocket', 'xhr-polling'] });
+    this.socket = io(this.serverUrl, { transports: ['websocket', 'xhr-polling'] });
     this.socket.on('connect', () => {
       this.sendUser(username);
       console.log('connected to the chat server');
