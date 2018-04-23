@@ -5,6 +5,11 @@
         </div>
         <div class="panel-body user-list">
             <ul class="list-group">
+                <a routerLink="/chat/chat-room"
+                   class="list-group-item common-chat-room"
+                >
+                common chat room
+               </a>
               <a *ngFor="let user of users"
                 href="#"
                 class="list-group-item"

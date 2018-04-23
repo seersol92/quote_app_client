@@ -10,7 +10,6 @@ export class ActiveListComponent implements OnInit {
   @Input() users: Array<String>;
   @Input() current: string;
   @Output() newConv = new EventEmitter<string>();
-
   constructor() { }
 
   ngOnInit() {
