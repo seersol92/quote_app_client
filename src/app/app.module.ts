@@ -28,7 +28,10 @@ import { Ng2SearchPipeModule } from 'ng2-search-filter';
 import { OrderModule } from 'ngx-order-pipe';
 import { UserComponent } from './user/user.component';
 import { Constants } from './common/file.constants';
-
+import { ChatService } from './services/chat.service';
+import { ActiveListComponent } from './chat/active-list/active-list.component';
+import { ChatRoomComponent } from './chat/chat-room/chat-room.component';
+import { MessageComponent } from './chat/message/message.component';
 
 
 const APP_ROUTES: Routes = [
@@ -67,6 +70,10 @@ const APP_ROUTES: Routes = [
     component: CargoQuotesComponent,
     canActivate: [AuthGuard]
   },
+  { path: 'chat', canActivate: [AuthGuard], children: [
+    { path: ':chatWith', component: ChatRoomComponent },
+    { path: '**', redirectTo: '/chat/chat-room', pathMatch: 'full' }
+  ] },
   {
     path: 'cargo_register',
     component: CargoRegisterComponent,
@@ -110,7 +117,10 @@ const APP_ROUTES: Routes = [
     CargoRegisterComponent,
     CompanyRegisterComponent,
     VesselRegisterComponent,
-    UserComponent
+    UserComponent,
+    ActiveListComponent,
+    ChatRoomComponent,
+    MessageComponent
   ],
   imports: [
     BrowserModule,
@@ -123,7 +133,7 @@ const APP_ROUTES: Routes = [
     RouterModule.forRoot(APP_ROUTES),
     ModalModule.forRoot(),
   ],
-  providers: [AuthService, AuthGuard, NotAuthGuard, LoggedInService, FileUtilService],
+  providers: [AuthService, AuthGuard, NotAuthGuard, LoggedInService, FileUtilService, ChatService],
   bootstrap: [AppComponent],
   exports: [ RouterModule ],
 

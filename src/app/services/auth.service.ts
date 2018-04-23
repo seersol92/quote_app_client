@@ -10,8 +10,8 @@ import 'rxjs/add/observable/throw';
 @Injectable()
 export class AuthService {
   // domain = 'http://67.207.87.102:443';
-  domain = 'http://198.199.121.183:443';
-  // domain = 'http://localhost:443';
+ // domain = 'http://198.199.121.183:443';
+   domain = 'http://localhost:3000';
   authToken;
   user;
   public isAdmin: Boolean = false;
@@ -83,6 +83,20 @@ export class AuthService {
      this.user = null;
      localStorage.clear();
    }
+
+   loadCredentials(): void {
+    const token = localStorage.getItem('token');
+    const user = localStorage.getItem('user');
+    this.authToken = token;
+    this.user = user;
+  }
+
+  getUserData(): any {
+    this.loadCredentials();
+    const jUser = JSON.parse(this.user);
+    const jData = {token: this.authToken, user: jUser};
+    return jData;
+  }
 
   storeUserData(token, user) {
     localStorage.setItem('token', token);

@@ -4,5 +4,7 @@
 // The list of which env maps to which file can be found in `.angular-cli.json`.
 
 export const environment = {
-  production: false
+  production: false,
+  backendUrl: 'http://localhost:3000',
+  // backendUrl: 'https://mean-chat-app-seersol.c9users.io:443'
 };

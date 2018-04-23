@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { AbstractControl } from '@angular/forms';
 import { FormControl, FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { AuthService } from '../services/auth.service';
+import { ChatService } from '../services/chat.service';
 import { Router } from '@angular/router';
 import { AuthGuard } from '../guards/auth.guard';
 import { Observable } from 'rxjs/Observable';
@@ -22,7 +23,13 @@ export class LoginComponent implements OnInit {
   messageClass;
   message;
   loginError = false;
-  constructor( private fb: FormBuilder, private auth: AuthService, private router: Router, private authGuard: AuthGuard) {
+  constructor(
+    private fb: FormBuilder,
+    private auth: AuthService,
+    private router: Router,
+    private authGuard: AuthGuard,
+    private chatService: ChatService
+  ) {
    this.createLoginForm();
   }
 
@@ -43,6 +50,7 @@ export class LoginComponent implements OnInit {
           this.messageClass = 'alert alert-success';
           this.message = 'Logged In Redirecting...';
           this.auth.storeUserData(data.token, data.user);
+          this.chatService.connect(data.user.username);
           setTimeout(() => {
             this.auth.loggedinName = data.user.username;
             this.auth.loggedInId = data.user.loggedId;
