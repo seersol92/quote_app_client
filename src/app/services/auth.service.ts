@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Headers, Http, RequestOptions } from '@angular/http';
+import {environment} from '../../environments/environment';
 import { tokenNotExpired } from 'angular2-jwt';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
@@ -7,11 +8,10 @@ import 'rxjs/add/operator/catch';
 import 'rxjs/add/observable/throw';
 
 
+const BASE_URL = environment.backendUrl;
 @Injectable()
 export class AuthService {
-  // domain = 'http://67.207.87.102:443';
- // domain = 'http://198.199.121.183:443';
-   domain = 'http://localhost:3000';
+  domain: string =  BASE_URL;
   authToken;
   user;
   public isAdmin: Boolean = false;

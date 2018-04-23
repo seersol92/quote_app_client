@@ -80,7 +80,7 @@ const APP_ROUTES: Routes = [
     canActivate: [AuthGuard]
   },
   {
-    path: 'comapany_register',
+    path: 'company_register',
     component: CompanyRegisterComponent,
     canActivate: [AuthGuard]
   },

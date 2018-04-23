@@ -43,13 +43,12 @@ export class ChatRoomComponent implements OnInit, OnDestroy {
     this.route.params.subscribe((params: Params) => {
       this.chatWith = params.chatWith;
     });
-
     this.sendForm = this.formBuilder.group({
       message: ['', Validators.required ]
     });
-
-    this.getMessages(this.chatWith);
-
+    if ( this.chatWith !== 'chat-room') {
+      this.getMessages(this.chatWith);
+    }
     this.connectToChat();
 
   }

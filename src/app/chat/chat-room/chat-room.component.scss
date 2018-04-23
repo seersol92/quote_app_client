@@ -8,11 +8,11 @@
 .active-list-container {
   padding-left: 4px;
   padding-right: 4px;
+
 }
 
 .chat-container {
   border: none;
-  margin-top: -21px;
   margin-bottom: 0;
   @include box-shadow($x: -2px, $y: 0px);
   @include border-radius(0);
@@ -22,14 +22,12 @@
     padding: 8px 15px;
     margin: 0;
     margin-bottom: 4px;
-    border: none;
-    @include border-radius-separate($topLeftRadius: 0, $topRightRadius: 0, $bottomLeftRadius: 5px, $bottomRightRadius: 5px)
-    background-color: lighten(#2c3e50, 20%);
-    @include box-shadow($x: 0px, $y: 2px);
+    background-color: #008cba;
+    color: white;
+    font-weight: bold;
 
     span {
-      font-size: 12px;
-      color: #BDBDBD;
+      color: green;
     }
 
     button {
@@ -46,6 +44,13 @@
     @include transition("filter .2s ease-in 0s");
   }
 
+  .start-chat {
+    .panel-body {
+      margin: 0;
+      border: none;
+      height: calc(100vh - 110px);
+    }
+  }
   .panel-footer {
     @include transition("filter .2s ease-in 0s");
 

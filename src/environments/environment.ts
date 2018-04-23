@@ -6,5 +6,4 @@
 export const environment = {
   production: false,
   backendUrl: 'http://localhost:3000',
-  // backendUrl: 'https://mean-chat-app-seersol.c9users.io:443'
 };
