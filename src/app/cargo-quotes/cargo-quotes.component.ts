@@ -78,9 +78,7 @@ export class CargoQuotesComponent implements OnInit {
       }
 
       this.csvRecords = this._fileUtil.getDataRecordsArrayFromCSVFile(csvRecordsArray,
-          headerLength, Constants.validateHeaderAndRecordLengthFlag, Constants.tokenDelimeter);
-      this.csvRecords.shift(); // remove header
-      this.csvRecords.pop(); // remove last row
+      headerLength, Constants.validateHeaderAndRecordLengthFlag, Constants.tokenDelimeter);
       if ( this.csvRecords == null || this.csvRecords.length === 0) {
         alert('No Records Found To Be Imported!!');
       } else {
@@ -94,12 +92,15 @@ export class CargoQuotesComponent implements OnInit {
 
   onImport () {
     this.formProcessing = true;
+    this.csvRecords.shift(); // remove header
+    this.csvRecords.pop(); // remove last row
     if ( this.csvRecords !== null || this.csvRecords.length > 0 ) {
       const data = {
         'imported_quotes': this.csvRecords,
         'imported_by': this.auth.loggedinName
       };
       console.log(data);
+     // return false;
       this.auth.postRequest('/cargo-quote/import-quotes', data ).subscribe(res => {
       this.csvRecords = [];
       this.modalRef.hide();
@@ -124,6 +125,7 @@ export class CargoQuotesComponent implements OnInit {
 
   getQuotesToJson () {
     const datePipe = new DatePipe('en-US');
+    this.jsonQuote = [];
     if (this.cargoList !== null || this.cargoList.length > 0) {
       for (let i = 0; i < this.cargoList.length; i++) {
       this.jsonQuote.push({
@@ -139,8 +141,8 @@ export class CargoQuotesComponent implements OnInit {
         discharge: this.cargoList[i].discharge,
         rate_type: this.cargoList[i].rate_type,
         rate: this.cargoList[i].rate,
-        vessel: this.cargoList[i].vessel,
-        remarks: this.cargoList[i].remarks,
+        vessel: this.cargoList[i].vessel.replace(/"|'|,|/g, ''),
+        remarks: this.cargoList[i].remarks.replace(/"|'|,|/g, ''),
        date_added: datePipe.transform(this.cargoList[i].dateadded, 'dd/MM/yyyy'),
         added_by: this.cargoList[i].added_by
       });
@@ -175,12 +177,12 @@ export class CargoQuotesComponent implements OnInit {
     str += row + '\r\n';
 
     for (let i = 0; i < array.length; i++) {
-        let line = '';
+        let line = "";
         for (var index in array[i]) {
             if (line !== '') line += ','
             line += array[i][index];
         }
-        str += line + '\r\n';
+        str += line + "\r\n";
     }
     return str;
 }

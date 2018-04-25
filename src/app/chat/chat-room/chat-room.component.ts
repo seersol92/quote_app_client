@@ -37,7 +37,7 @@ export class ChatRoomComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit() {
-    let userData = this.authService.getUserData();
+    const  userData = this.authService.getUserData();
     this.username = userData.user.username;
 
     this.route.params.subscribe((params: Params) => {
@@ -57,7 +57,7 @@ export class ChatRoomComponent implements OnInit, OnDestroy {
   }
 
   connectToChat(): void {
-    let connected = this.chatService.isConnected();
+    const  connected = this.chatService.isConnected();
     if (connected === true) {
       this.initReceivers();
     } else {
@@ -72,9 +72,9 @@ export class ChatRoomComponent implements OnInit, OnDestroy {
       .subscribe(data => {
         if (data.success === true) {
           this.conversationId = data.conversation._id || data.conversation._doc._id;
-          let messages = data.conversation.messages || null;
+          const messages = data.conversation.messages || null;
           if (messages && messages.length > 0) {
-            for (let message of messages) {
+            for (const message of messages) {
               this.checkMine(message);
             }
             this.noMsg = false;
@@ -94,7 +94,7 @@ export class ChatRoomComponent implements OnInit, OnDestroy {
     this.chatService.getUserList()
       .subscribe(data => {
         if (data.success === true) {
-          let users = data.data;
+          const users = data.data;
           for (let i = 0; i < users.length; i++) {
             if (users[i].username === this.username) {
               users.splice(i, 1);
@@ -105,10 +105,10 @@ export class ChatRoomComponent implements OnInit, OnDestroy {
 
           this.receiveActiveObs = this.chatService.receiveActiveList()
             .subscribe(users => {
-              for (let onlineUsr of users) {
+              for (const onlineUsr of users) {
                 if (onlineUsr.username !== this.username) {
                   let flaggy = 0;
-                  for (let registered of this.userList) {
+                  for (const registered of this.userList) {
                     if (registered.username === onlineUsr.username) {
                       flaggy = 1;
                       break;
@@ -121,9 +121,9 @@ export class ChatRoomComponent implements OnInit, OnDestroy {
                 }
               }
 
-              for (let user of this.userList) {
+              for (const user of this.userList) {
                 let flag = 0;
-                for (let liveUser of users) {
+                for (const liveUser of users) {
                   if (liveUser.username === user.username) {
                     user.online = true;
                     flag = 1;
@@ -171,14 +171,13 @@ export class ChatRoomComponent implements OnInit, OnDestroy {
   }
 
   onSendSubmit(): void {
-    let newMessage: Message = {
+    const newMessage: Message = {
       created: new Date(),
       from: this.username,
       text: this.sendForm.value.message,
       conversationId: this.conversationId,
       inChatRoom: this.chatWith === 'chat-room'
     };
-console.log(newMessage);
     this.chatService.sendMessage(newMessage, this.chatWith);
     newMessage.mine = true;
     this.noMsg = false;
@@ -211,33 +210,33 @@ console.log(newMessage);
   }
 
   notifSound(): void {
-    let sound: any = this.el.nativeElement.querySelector('#notifSound');
+    const sound: any = this.el.nativeElement.querySelector('#notifSound');
     sound.play();
   }
 
   msgSound(): void {
-    let sound: any = this.el.nativeElement.querySelector('#msgSound');
+    const sound: any = this.el.nativeElement.querySelector('#msgSound');
     sound.load();
     sound.play();
   }
 
   scrollToBottom(): void {
-    let element: any = this.el.nativeElement.querySelector('.msg-container');
+    const element: any = this.el.nativeElement.querySelector('.msg-container');
     setTimeout(() => {
       element.scrollTop = element.scrollHeight;
     }, 100);
   }
 
   checkOnline(name: string): boolean {
-    if (name == 'chat-room') {
-      for (let user of this.userList) {
-        if (user.online == true) {
+    if (name === 'chat-room') {
+      for (const user of this.userList) {
+        if (user.online === true) {
           return true;
         }
       }
       return false;
     } else {
-      for (let user of this.userList) {
+      for (const user of this.userList) {
         if (user.username === name) {
           return user.online;
         }

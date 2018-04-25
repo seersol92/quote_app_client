@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { AuthService } from '../services/auth.service';
+
 
 @Component({
   selector: 'app-dashboard',
@@ -6,9 +8,18 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./dashboard.component.css']
 })
 export class DashboardComponent implements OnInit {
-
-  constructor() { }
+  isAdmin: Boolean = false;
+  constructor(
+    private auth: AuthService
+  ) { }
   ngOnInit() {
+    this.auth.getProfile().subscribe(profile => {
+      if (profile.user) {
+        if (profile.user.is_admin) {
+          this.isAdmin = true;
+        }
+      }
+    });
   }
 
 }
