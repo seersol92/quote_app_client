@@ -9,6 +9,8 @@ import { Router } from '@angular/router';
 import { DatePipe } from '@angular/common';
 import { FileUtilService } from './../services/file.util.service';
 import { Constants } from './../common/file.constants';
+import * as moment from 'moment';
+
 
 
 @Component({

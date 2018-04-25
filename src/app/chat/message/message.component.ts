@@ -23,7 +23,6 @@ export class MessageComponent implements OnInit {
 
   updateFromNow(): void {
     this.time = moment(this.message.created).fromNow();
-    console.log(this.time);
   }
 
 }
