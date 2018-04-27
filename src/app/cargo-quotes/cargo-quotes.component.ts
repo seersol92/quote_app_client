@@ -36,6 +36,7 @@ export class CargoQuotesComponent implements OnInit {
   csvRecords = [];
   cargoList = [] ;
   jsonQuote = [];
+  cargoStatus =  ['Working', ' On Subs', 'Fixed', 'Withdrawn', 'Failed'];
   cargo = [];
  async ngOnInit() {
     await this.auth.getProfile().subscribe(profile => {
@@ -125,6 +126,13 @@ export class CargoQuotesComponent implements OnInit {
     }
   }
 
+  checkEmpty (data)  {
+    if (typeof(data) === 'undefined' || data === null || typeof(data.length) === 'undefined') {
+      return '';
+    }
+    return data;
+  }
+
   getQuotesToJson () {
     const datePipe = new DatePipe('en-US');
     this.jsonQuote = [];
@@ -133,6 +141,7 @@ export class CargoQuotesComponent implements OnInit {
       this.jsonQuote.push({
         'No#' : (i + 1),
         cargo_status: this.cargoList[i].cargo_status,
+        type: this.checkEmpty(this.cargoList[i].type),
         charterer: this.cargoList[i].charterer,
         broker: this.cargoList[i].broker,
         quantity: this.cargoList[i].quantity,
@@ -217,28 +226,25 @@ export class CargoQuotesComponent implements OnInit {
   }
   createForm() {
     this.cargoFrom = this.fb.group({
+      type: [null],
       cargo_status: [null],
       charterer: [null, Validators.compose([
           Validators.required,
-          Validators.minLength(3),
           Validators.maxLength(20)
         ])
       ],
       broker: [null, Validators.compose([
           Validators.required,
-          Validators.minLength(3),
           Validators.maxLength(20)
         ])
       ],
       quantity: [null, Validators.compose([
         Validators.required,
-        Validators.minLength(3),
         Validators.maxLength(20)
       ])
       ],
       grade: [null, Validators.compose([
           Validators.required,
-          Validators.minLength(2),
           Validators.maxLength(20)
         ])
     ],
@@ -288,6 +294,7 @@ export class CargoQuotesComponent implements OnInit {
 
   getFormData() {
     const data = {
+        type: this.cargoFrom.get('type').value,
         cargo_status: this.cargoFrom.get('cargo_status').value,
         charterer: this.cargoFrom.get('charterer').value,
         broker: this.cargoFrom.get('broker').value,

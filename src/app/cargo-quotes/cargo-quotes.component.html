@@ -12,26 +12,42 @@
                 <!--<input type="file" accept=".csv" (change)="convertFile($event)" /> -->  
                 <fieldset>
                     <div class="form-group">
-                    <div class="col-lg-10 col-lg-offset-2">
-                        <label>
-                            <input 
-                            type="radio" 
-                            value="cargo"
-                            formControlName="cargo_status"
-                            [checked]="cargo.cargo_status === 'cargo'"
-                            >
-                            Cargo
-                        </label>
-                        &nbsp;&nbsp;
-                        <label>
-                            <input 
-                            type="radio" 
-                            value="tc"
-                            formControlName="cargo_status"  
-                            [checked]="cargo.cargo_status === 'tc'"
-                            >
-                            TC
-                        </label>
+                        <div class="col-lg-2">
+                            <label for="">Type</label>
+                        </div>
+                        <div class="col-lg-8">
+                            <label>
+                                <input 
+                                type="radio" 
+                                value="cargo"
+                                formControlName="type"
+                                [checked]="cargo.type === 'cargo'"
+                                >
+                                Cargo
+                            </label>
+                            &nbsp;&nbsp;
+                            <label>
+                                <input 
+                                type="radio" 
+                                value="tc"
+                                formControlName="type"  
+                                [checked]="cargo.type === 'tc'"
+                                >
+                                TC
+                            </label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-lg-2">
+                            <label for="">Status</label>
+                        </div>
+                        <div class="col-lg-10">
+                            <select name="" id="" class="form-control" formControlName="cargo_status" [(ngModel)]='cargo.cargo_status'>
+                                <option  selected hidden>Select Cargo Status</option>
+                                <option  *ngFor="let option of cargoStatus" [ngValue]="option">
+                                    {{option}}
+                                </option>
+                            </select>
                         </div>
                     </div>
                     <div class="form-group">
@@ -186,6 +202,9 @@
                 [ngClass]="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span>
                 Status
             </th>
+            <th>
+                Type
+            </th>
             <th (click)="sort('charterer')">
                 <span class="glyphicon sort-icon" *ngIf="key =='charterer'" 
                 [ngClass]="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span>
@@ -251,6 +270,7 @@
         <tr *ngFor="let item of cargoList | filter:qoute | orderBy: key : reverse; index as i ">
             <td>{{i+1}}</td>
             <td>{{item.cargo_status}}</td>
+            <td>{{item.type}}</td>
             <td>{{item.charterer}}</td>
             <td>{{item.broker}}</td>
             <td>{{item.grade}}</td>

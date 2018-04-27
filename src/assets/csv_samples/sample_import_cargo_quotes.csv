@@ -1,1 +1,1 @@
-cargo status,charterer,broker,quantity,grade,date1 (yyyy-dd-mm),date2 (yyyy-dd-mm),load,discharge,rate_type,rate,vessel,remarks
+cargo status,type,charterer,broker,quantity,grade,date1,date2,load,discharge,rate_type,rate,vessel,remarks
