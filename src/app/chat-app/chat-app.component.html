@@ -1,0 +1,59 @@
+<div class="panel panel-primary ">
+    <div class="panel-heading text-center clearfix">
+      Chat list
+    </div>
+    <div class="panel-body ">
+        <ul class="list-group user-list">
+            <a (click)="onNewConv('chat-room')"
+                class="list-group-item common-chat-room"
+            >
+            common chat room
+            </a>
+          <a *ngFor="let user of userList"
+            href="javascript:void(0);"
+            class="list-group-item"
+            (click)="onNewConv(user.username)"
+            [ngClass]="{active: user.username == current, online: user.online}"
+            >
+              <img src="assets/img/generic-avatar.png" alt="avatar" height="28.5px" width="25px">
+              {{user.username}}
+              <span *ngIf="user.online" class="glyphicon glyphicon-ok-sign pull-right" aria-hidden="true" style="padding-top: 5px"></span>
+          </a>
+        </ul>
+    </div>
+    <div class="panel-footer" *ngIf="showInbox !== null">
+        <p class="inbox-heading"> 
+          {{chatWith}} <span *ngIf="currentOnline">online</span>
+        </p>
+      <div class="chat-container">
+        <div class="msg-container" [ngClass]="{blurred: showActive}">
+          <div *ngIf="noMsg" id="noMsg" class="text-center">
+            There are no messages
+          </div>
+          <app-message *ngFor="let message of messageList" [message]="message"></app-message>
+        </div>
+          <form [formGroup]="sendForm" (ngSubmit)="onSendSubmit()">
+            <div class="input-group">
+              <input type="text"
+                class="form-control"
+                placeholder="Type your message..."
+                id="message"
+                name="message"
+                formControlName="message"
+                autofocus="true"
+                autocomplete="off"
+              >
+              <span class="input-group-btn">
+                <button [disabled]="sendForm.invalid" type="submit" class="btn btn-primary" name="send">Send</button>
+              </span>
+            </div>
+          </form>
+        <div *ngIf="notify" class="well notification">
+          <h4><strong>{{notification.from}}</strong> <span *ngIf="notification.inChatRoom">to chat-room</span>:</h4>
+          <p>{{notification.text}}</p>
+        </div>
+        </div>
+    </div>
+</div>
+<audio id="notifSound" src="assets/audio/notification.mp3" type="audio/mpeg">
+  <audio id="msgSound" src="assets/audio/message.mp3" type="audio/mpeg"></audio>

@@ -92,7 +92,6 @@ export class ChatService {
   receiveMessage(): any {
     let observable = new Observable(observer => {
       this.socket.on('message', (data: Message) => {
-       console.log(data);
         observer.next(data);
       });
     });

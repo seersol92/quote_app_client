@@ -32,6 +32,7 @@ import { ChatService } from './services/chat.service';
 import { ActiveListComponent } from './chat/active-list/active-list.component';
 import { ChatRoomComponent } from './chat/chat-room/chat-room.component';
 import { MessageComponent } from './chat/message/message.component';
+import { ChatAppComponent } from './chat-app/chat-app.component';
 
 
 const APP_ROUTES: Routes = [
@@ -120,7 +121,8 @@ const APP_ROUTES: Routes = [
     UserComponent,
     ActiveListComponent,
     ChatRoomComponent,
-    MessageComponent
+    MessageComponent,
+    ChatAppComponent
   ],
   imports: [
     BrowserModule,

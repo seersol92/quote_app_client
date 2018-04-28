@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input, EventEmitter, Output } from '@angular/core';
 import { AuthService } from '../services/auth.service';
 import { LoggedInService } from '../services/logged-in.service';
 import { Router } from '@angular/router';
@@ -10,6 +10,7 @@ import { FlashMessagesService } from 'angular2-flash-messages';
   styleUrls: ['./navbar.component.css']
 })
 export class NavbarComponent implements OnInit {
+  @Output() chatPanel = new EventEmitter<string>();
   constructor(
     public auth: AuthService,
     public loggedSer: LoggedInService,
@@ -26,6 +27,10 @@ export class NavbarComponent implements OnInit {
   ngOnInit() {
   }
 
+  chatBox(): boolean {
+    this.chatPanel.emit('hadi');
+    return false;
+  }
   logMeOut() {
     this.auth.logout();
     // flash message will be visible for 2 second

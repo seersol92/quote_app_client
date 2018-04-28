@@ -20,7 +20,13 @@
     padding-right: 10px;
 
     .msg-text {
-      margin-top: 12px;
+      /* BOTH of the following are required for text-overflow */
+      white-space: nowrap;
+      overflow: hidden;
+    }
+    
+    .overflow-visible {
+      white-space: initial;
     }
   }
 }
