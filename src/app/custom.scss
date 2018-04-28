@@ -48,7 +48,7 @@
     overflow-y: scroll;
     @include transition("filter .2s ease-in 0s");
    @media only screen and (min-width: 700px) {
-    height: calc(100vh - 500px);
+    height: calc(100vh - 460px);
     overflow-y: scroll;
   }
   }
@@ -162,7 +162,7 @@
   overflow-y: scroll;
 
   @media only screen and (min-width: 768px) {
-    height: calc(100vh - 736px);
+    height: calc(100vh - 530px);
     overflow-y: scroll;
   }
 
