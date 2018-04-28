@@ -18,16 +18,13 @@
   .msg-text-container {
     padding-left: 10px;
     padding-right: 10px;
-
-    .msg-text {
-      /* BOTH of the following are required for text-overflow */
-      white-space: nowrap;
-      overflow: hidden;
-    }
     
-    .overflow-visible {
-      white-space: initial;
+    .msg-text {
+      width: 99% !important;
+      word-wrap: break-word !important;
+      text-align: left !important;
     }
+
   }
 }
 

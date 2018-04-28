@@ -1,5 +1,6 @@
 @import "../assets/sass/to-import.scss";
 
+
 .column {
   padding-left: 0;
   padding-right: 0;
@@ -46,7 +47,7 @@
     height: calc(100vh - 700px);
     overflow-y: scroll;
     @include transition("filter .2s ease-in 0s");
-   @media only screen and (min-width: 768px) {
+   @media only screen and (min-width: 700px) {
     height: calc(100vh - 500px);
     overflow-y: scroll;
   }
@@ -161,7 +162,7 @@
   overflow-y: scroll;
 
   @media only screen and (min-width: 768px) {
-    height: calc(100vh - 500px);
+    height: calc(100vh - 736px);
     overflow-y: scroll;
   }
 
