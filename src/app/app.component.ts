@@ -14,12 +14,11 @@ export class AppComponent {
     private _flashMessagesService: FlashMessagesService,
     private route: ActivatedRoute,
     private el: ElementRef,
-    private authService: AuthService,
-    private auth: AuthService,
+    public auth: AuthService,
   ) {}
   logMeOut() {
     this.chatPanel = false;
-    this.authService.logout();
+    this.auth.logout();
     // flash message will be visible for 2 second
     this._flashMessagesService.show('You are logged out', { cssClass: 'alert-success', timeout: 2000 });
     this.router.navigate(['/login']);
