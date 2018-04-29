@@ -1,4 +1,4 @@
-import { Component, TemplateRef } from '@angular/core';
+import { Component, TemplateRef,  OnInit } from '@angular/core';
 import { BsModalService } from 'ngx-bootstrap/modal';
 import { BsModalRef } from 'ngx-bootstrap/modal/bs-modal-ref.service';
 import {AbstractControl} from '@angular/forms';
@@ -12,7 +12,7 @@ import { Router } from '@angular/router';
   templateUrl: './vessel-register.component.html',
   styleUrls: ['./vessel-register.component.css']
 })
-export class VesselRegisterComponent  {
+export class VesselRegisterComponent  implements OnInit {
   modalRef: BsModalRef;
   vesselFrom: FormGroup;
   messageClass: String = null;
@@ -24,16 +24,25 @@ export class VesselRegisterComponent  {
   vessel = [];
   formProcessing: Boolean = false;
   isEditVessel: Boolean = false;
+  userName: string = null;
+  isAdmin: Boolean = false;
   vesselRegisterId: String ;
+  vesselClass = ['Panamax', 'Aframax (>110)', 'Aframax (<110)', '	Suezmax', 'VLCC', 'MR', 'LR1', 'LR2 (>110)', 'LR2 (<110)', 'LR3'];
   constructor(
     private fb: FormBuilder,
     private auth: AuthService,
     private router: Router,
     private modalService: BsModalService
   ) {
+   }
+
+   ngOnInit() {
+    const  userData = this.auth.getUserData();
+    this.userName = userData.user.username;
+    this.isAdmin  = userData.user.isadmin;
     this.createForm();
     this.vesselFetch();
-   }
+    }
 
   async vesselFetch() {
     await this.auth.getRequest('/vessel-register', null ).subscribe(res => {
@@ -79,7 +88,11 @@ export class VesselRegisterComponent  {
             Validators.minLength(3),
             Validators.maxLength(20)
           ])
-      ]
+      ],
+      vessel_class: [null, Validators.compose([
+        Validators.required
+      ])
+  ]
     });
   }
 
@@ -132,7 +145,9 @@ export class VesselRegisterComponent  {
         type: this.vesselFrom.get('type').value,
         own:  this.vesselFrom.get('owner').value,
         imo:  this.vesselFrom.get('imo').value,
-        flag: this.vesselFrom.get('flag').value
+        flag: this.vesselFrom.get('flag').value,
+        vessel_class: this.vesselFrom.get('vessel_class').value,
+        added_by: this.userName
     };
     if (this.vesselId !== null && this.isEditVessel) {
         data['vessel_id'] = this.vesselId;
@@ -158,7 +173,8 @@ export class VesselRegisterComponent  {
       type: this.vessel['type'],
       owner:  this.vessel['own'],
       imo:  this.vessel['imo'],
-      flag: this.vessel['flag']
+      flag: this.vessel['flag'],
+      vessel_class: this.vessel['vessel_class']
     });
     this.cargoModalTitleTxt = 'Edit Vessel';
     this.cargoModalSaveBtnTxt = 'Update';

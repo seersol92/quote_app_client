@@ -32,6 +32,8 @@ export class CargoQuotesComponent implements OnInit {
   allowImport: Boolean = false;
   allowExport: Boolean = false;
   reverse: Boolean = false;
+  userName: string = null;
+  isAdmin: Boolean = false;
   key: String = 'status';
   csvRecords = [];
   cargoList = [] ;
@@ -41,13 +43,11 @@ export class CargoQuotesComponent implements OnInit {
   'East Coast South America', 'West Coast Central America', 'East Coast Mexico'];
 cargoStatus = ['Working', ' On Subs', 'Fixed', 'Withdrawn', 'Failed'];
   cargo = [];
- async ngOnInit() {
-    await this.auth.getProfile().subscribe(profile => {
-      if (profile.user) {
-       this.auth.loggedinName = profile.user.username;
-       this.auth.isAdmin = profile.user.is_admin;
-      }
-    });
+
+ngOnInit() {
+  const  userData = this.auth.getUserData();
+  this.userName = userData.user.username;
+  this.isAdmin  = userData.user.isadmin;
   }
   constructor(
     private fb: FormBuilder,
@@ -105,9 +105,8 @@ cargoStatus = ['Working', ' On Subs', 'Fixed', 'Withdrawn', 'Failed'];
     if ( this.csvRecords !== null || this.csvRecords.length > 0 ) {
       const data = {
         'imported_quotes': this.csvRecords,
-        'imported_by': this.auth.loggedinName
+        'imported_by': this.userName
       };
-      console.log(data);
      // return false;
       this.auth.postRequest('/cargo-quote/import-quotes', data ).subscribe(res => {
       this.csvRecords = [];
@@ -316,7 +315,7 @@ cargoStatus = ['Working', ' On Subs', 'Fixed', 'Withdrawn', 'Failed'];
         rate: this.cargoFrom.get('rate').value,
         vessel: this.cargoFrom.get('vessel').value,
         remarks: this.cargoFrom.get('remarks').value,
-        addedby: this.auth.loggedinName
+        addedby: this.userName
     };
     return data;
   }

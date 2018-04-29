@@ -15,13 +15,13 @@
       <ul class="nav navbar-nav navbar-right">
        <li *ngIf="auth.isLoggedin()" [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"><a  routerLink="/dashboard">Dashboard</a></li>
        <li *ngIf="auth.isLoggedin()" [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"><a  routerLink="/cargo_quotes">Cargo Quotes</a></li>
-       <li *ngIf="auth.isLoggedin()  && auth.isAdmin" [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"><a  routerLink="/cargo_register">Cargo Register</a></li>
-       <li *ngIf="auth.isLoggedin()  && auth.isAdmin" [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"><a  routerLink="/company_register">Company Register</a></li>
-       <li *ngIf="auth.isLoggedin()  && auth.isAdmin" [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"><a  routerLink="/vessel_register">Vessel Register</a></li>            
+       <li *ngIf="auth.isLoggedin()  && isAdmin" [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"><a  routerLink="/cargo_register">Cargo Register</a></li>
+       <li *ngIf="auth.isLoggedin()  && isAdmin" [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"><a  routerLink="/company_register">Company Register</a></li>
+       <li *ngIf="auth.isLoggedin()  && isAdmin" [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"><a  routerLink="/vessel_register">Vessel Register</a></li>            
        <li *ngIf="auth.isLoggedin()" class="dropdown open">
-          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="true">{{auth.loggedinName | uppercase}}<span class="caret"></span></a>
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="true">{{userName | uppercase}}<span class="caret"></span></a>
           <ul class="dropdown-menu" role="menu">                   
-            <li *ngIf="auth.isLoggedin() && auth.isAdmin" [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"><a  routerLink="/user-management"> User Management </a></li>                  
+            <li *ngIf="auth.isLoggedin() && isAdmin" [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"><a  routerLink="/user-management"> User Management </a></li>                  
             <li *ngIf="auth.isLoggedin()" [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"><a  routerLink="/profile"> Profile</a></li>                  
             <li *ngIf="auth.isLoggedin()" ><a href="#" (click)="logMeOut()">Logout</a></li>
           </ul>

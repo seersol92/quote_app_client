@@ -305,7 +305,7 @@
             <td>
                 <a href="javascript:void(0)" (click)="onEditCargo(i, template)" ><span class="glyphicon glyphicon-pencil info"></span></a>
                 &nbsp;
-                <a href="javascript:void(0)" (click)="onRemoveCargo(i, item._id)" class="danger"><span class="glyphicon glyphicon-trash"></span></a>                            
+                <a *ngIf="isAdmin" href="javascript:void(0)" (click)="onRemoveCargo(i, item._id)" class="danger"><span class="glyphicon glyphicon-trash"></span></a>                            
             </td>
         </tr>
         </tbody>

@@ -39,13 +39,13 @@ export class RegisterComponent {
                       [Validators.required,
                       Validators.minLength(3),
                       Validators.maxLength(20),
-                      Validators.pattern('([a-zA-Z0-9]*$)')])
+                      Validators.pattern('(^[-_ a-zA-Z0-9]+$)')])
                 ],
       lastname:  [null, Validators.compose([
                         Validators.required,
                         Validators.minLength(3),
                         Validators.maxLength(20),
-                        Validators.pattern('([a-zA-Z0-9]*$)')]
+                        Validators.pattern('(^[-_ a-zA-Z0-9]+$)')]
                       )],
       username:  [null, Validators.compose([
                         Validators.required,
@@ -57,7 +57,23 @@ export class RegisterComponent {
       email:     [null, Validators.compose([
                         Validators.required,
                         Validators.pattern(/^[_a-z0-9]+(\.[_a-z0-9]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,3})$/),
-                        Validators.minLength(8), Validators.maxLength(30)]), this.checkEmail.bind(this)],
+                        Validators.minLength(8), Validators.maxLength(30)]), this.checkEmail.bind(this)
+                  ],
+      company:   [null, Validators.compose([
+                    Validators.required,
+                    Validators.minLength(3),
+                    Validators.maxLength(20),
+                    Validators.pattern('(^[-_ a-zA-Z0-9]+$)')]
+                  )],
+      company_email: [null, Validators.compose([
+                  Validators.required,
+                  Validators.pattern(/^[_a-z0-9]+(\.[_a-z0-9]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,3})$/),
+                  Validators.minLength(8), Validators.maxLength(30)])
+                ],
+      mobile: [null],
+      office_line: [null],
+      ice: [null],
+      whatsapp: [null],
       password:  [null, Validators.compose([
                         Validators.required,
                         this.strongPassword,
@@ -121,6 +137,12 @@ export class RegisterComponent {
         lastname: this.regForm.get('lastname').value,
         username: this.regForm.get('username').value,
         email: this.regForm.get('email').value,
+        company_email: this.regForm.get('company_email').value,
+        company: this.regForm.get('company').value,
+        mobile: this.regForm.get('mobile').value,
+        office_line: this.regForm.get('office_line').value,
+        ice: this.regForm.get('ice').value,
+        whatsapp: this.regForm.get('whatsapp').value,
         password: this.regForm.get('password').value,
         is_admin: true
       };

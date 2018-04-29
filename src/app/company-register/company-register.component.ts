@@ -1,4 +1,4 @@
-import { Component, TemplateRef } from '@angular/core';
+import { Component, TemplateRef, Pipe, PipeTransform, OnInit } from '@angular/core';
 import { BsModalService } from 'ngx-bootstrap/modal';
 import { BsModalRef } from 'ngx-bootstrap/modal/bs-modal-ref.service';
 import {AbstractControl} from '@angular/forms';
@@ -12,7 +12,7 @@ import { Router } from '@angular/router';
   templateUrl: './company-register.component.html',
   styleUrls: ['./company-register.component.css']
 })
-export class CompanyRegisterComponent  {
+export class CompanyRegisterComponent implements OnInit {
   modalRef: BsModalRef;
   companyReg: FormGroup;
   messageClass: String = null;
@@ -22,6 +22,8 @@ export class CompanyRegisterComponent  {
   companyRegisterId: String = null;
   companyModalTitleTxt: String = null;
   companyModalSaveBtnTxt: String = null;
+  userName: string = null;
+  isAdmin: Boolean = false;
   companyList: any = [];
   company: any = [];
   constructor(
@@ -33,6 +35,12 @@ export class CompanyRegisterComponent  {
     this.createForm();
     this.companyFetch();
    }
+
+  ngOnInit() {
+    const  userData = this.auth.getUserData();
+    this.userName = userData.user.username;
+    this.isAdmin  = userData.user.isadmin;
+    }
 
   async companyFetch() {
     await this.auth.getRequest('/company-register', null ).subscribe(res => {
@@ -56,72 +64,66 @@ export class CompanyRegisterComponent  {
     this.companyReg = this.fb.group({
       name: [null, Validators.compose([
             Validators.required,
-            Validators.minLength(3),
             Validators.maxLength(20),
             Validators.pattern('(^[-_ a-zA-Z0-9]+$)')
           ])
       ],
       type: [null, Validators.compose([
             Validators.required,
-            Validators.minLength(3),
             Validators.maxLength(20),
             Validators.pattern('(^[-_ a-zA-Z0-9]+$)')
           ])
       ],
       address: [null, Validators.compose([
             Validators.required,
-            Validators.minLength(3),
             Validators.maxLength(20),
             Validators.pattern('(^[-_ a-zA-Z0-9]+$)')
           ])
       ],
       address2: [null, Validators.compose([
-            Validators.minLength(3),
             Validators.maxLength(20),
             Validators.pattern('(^[-_ a-zA-Z0-9]+$)')
           ])
       ],
       address3: [null, Validators.compose([
-            Validators.minLength(3),
             Validators.maxLength(20),
             Validators.pattern('(^[-_ a-zA-Z0-9]+$)')
           ])
       ],
       city: [null, Validators.compose([
             Validators.required,
-            Validators.minLength(3),
             Validators.maxLength(20),
             Validators.pattern('(^[-_ a-zA-Z0-9]+$)')
           ])
       ],
       state: [null, Validators.compose([
             Validators.required,
-            Validators.minLength(3),
             Validators.maxLength(20),
             Validators.pattern('(^[-_ a-zA-Z0-9]+$)')
           ])
       ],
       zip: [null, Validators.compose([
           Validators.required,
-          Validators.minLength(3),
           Validators.maxLength(20),
           Validators.pattern('(^[-_ a-zA-Z0-9]+$)')
         ])
       ],
       country: [null, Validators.compose([
           Validators.required,
-          Validators.minLength(3),
           Validators.maxLength(20),
           Validators.pattern('(^[-_ a-zA-Z0-9]+$)')
         ])
         ],
       phone: [null, Validators.compose([
           Validators.required,
-          Validators.minLength(3),
           Validators.maxLength(20),
           Validators.pattern('(^[-_ a-zA-Z0-9]+$)')
         ])
-        ]
+      ],
+      website: [null, Validators.compose([
+        Validators.required
+      ])
+      ]
     });
   }
 
@@ -178,7 +180,9 @@ export class CompanyRegisterComponent  {
       state:    this.companyReg.get('state').value,
       country:  this.companyReg.get('country').value,
       zip:    this.companyReg.get('zip').value,
-      phone:  this.companyReg.get('phone').value
+      phone:  this.companyReg.get('phone').value,
+      website: this.companyReg.get('website').value,
+      added_by: this.userName
     };
     if (this.companyRegisterId !== null && this.isEditCompany) {
         data['company_id'] = this.companyRegisterId;
@@ -210,7 +214,8 @@ export class CompanyRegisterComponent  {
       state:    this.company['state'],
       country:  this.company['country'],
       zip:    this.company['zip'],
-      phone:  this.company['phone']
+      phone:  this.company['phone'],
+      website: this.company['website']
     });
     this.companyModalTitleTxt = 'Edit Company';
     this.companyModalSaveBtnTxt = 'Update';

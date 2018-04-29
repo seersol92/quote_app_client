@@ -71,6 +71,7 @@ export class UserComponent implements  OnInit {
             this.messageClass = 'alert alert-danger';
             this.message = res.message;
         }else {
+            this.getUsers();
             this.messageClass = 'alert alert-success';
             this.message = res.message;
             setTimeout(() => {

@@ -7,8 +7,10 @@ import { Router, ActivatedRoute, Params } from '@angular/router';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
   public chatPanel: Boolean = false;
+  userName: string = null;
+  isAdmin: Boolean = false;
   constructor(
     private router: Router,
     private _flashMessagesService: FlashMessagesService,
@@ -16,6 +18,13 @@ export class AppComponent {
     private el: ElementRef,
     public auth: AuthService,
   ) {}
+
+  ngOnInit() {
+    const  userData = this.auth.getUserData();
+    this.userName = userData.user.username;
+    this.isAdmin  = userData.user.isadmin;
+    }
+
   logMeOut() {
     this.chatPanel = false;
     this.auth.logout();

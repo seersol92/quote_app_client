@@ -26,6 +26,7 @@ export class CargoRegisterComponent implements OnInit {
   isEditCargo: Boolean = false;
   formProcessing: Boolean = false;
   userName: string = null;
+  isAdmin: Boolean = false;
   constructor(
     private fb: FormBuilder,
     private auth: AuthService,
@@ -39,6 +40,7 @@ export class CargoRegisterComponent implements OnInit {
    ngOnInit () {
     const  userData = this.auth.getUserData();
     this.userName = userData.user.username;
+    this.isAdmin  = userData.user.isadmin;
    }
    openModal(template: TemplateRef<any>) {
     this.cargoModalTitleTxt = 'Create Cargo Registry';

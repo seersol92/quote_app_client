@@ -33,10 +33,25 @@
                     </div>
                     </div>
                     <div class="form-group">
-                    <label for="type" class="col-lg-2 control-label">TYPE</label>
-                    <div class="col-lg-10">
-                        <input type="text" class="form-control" formControlName="type" id="type" placeholder="TYPE" > 
+                        <label for="type" class="col-lg-2 control-label">TYPE</label>
+                        <div class="col-lg-10">
+                            <select name="type"  formControlName="type" class="form-control" >
+                                <option selected hidden value="">SELECT TYPE</option>
+                                <option value="Tanker – Products">Tanker – Products</option>
+                                <option value="Tanker - DPP">Tanker -DPP</option>
+                            </select> 
+                        </div>
                     </div>
+                    <div class="form-group">
+                        <label for="type" class="col-lg-2 control-label">VESSEL CLASS</label>
+                        <div class="col-lg-10">
+                            <select name="vessel_class"  formControlName="vessel_class" class="form-control" >
+                                <option selected hidden value="">SELECT VESSEL CLASS</option>
+                                <option  *ngFor="let option of vesselClass" [ngValue]="option">
+                                        {{option}}
+                                </option>
+                            </select> 
+                        </div>
                     </div>
                     <div class="form-group">
                     <div class="col-lg-10 col-lg-offset-2 text-right">
@@ -72,6 +87,7 @@
                     <th>Type</th>
                     <th>Imo #</th>
                     <th>Flag</th>
+                    <th>Vessel Class</th>
                     <th>Added By</th>
                     <th>Date Added</th>
                     <th>Action</th>                     
@@ -85,12 +101,13 @@
                         <td>{{item?.type}}</td>
                         <td>{{item?.imo}}</td>
                         <td>{{item?.flag}}</td>
-                        <td>----</td>
+                        <td>{{item?.vessel_class}}</td>                        
+                        <td>{{item.added_by}}</td>
                         <td>{{ item.dateadded | date:'dd/MM/yyyy' }}</td>
                         <td>
                             <a href="javascript:void(0)" (click)="onEditVessel(i, newvessel)" ><span class="glyphicon glyphicon-pencil info"></span></a>
                             &nbsp;
-                            <a href="javascript:void(0)" (click)="onRemoveVessel(i, item._id)" class="danger"><span class="glyphicon glyphicon-trash"></span></a>                            
+                            <a *ngIf="isAdmin" href="javascript:void(0)" (click)="onRemoveVessel(i, item._id)" class="danger"><span class="glyphicon glyphicon-trash"></span></a>                            
                         </td>     
                     </tr>
                 </tbody>
