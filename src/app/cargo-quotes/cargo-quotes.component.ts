@@ -36,7 +36,10 @@ export class CargoQuotesComponent implements OnInit {
   csvRecords = [];
   cargoList = [] ;
   jsonQuote = [];
-  cargoStatus =  ['Working', ' On Subs', 'Fixed', 'Withdrawn', 'Failed'];
+  market = ['US Gulf', 'Caribbean', 'Far East', 'Arabian Gulf', 'US West Coast',
+  'Mediterranean', 'UK Continent', 'US East Coast', 'West Coast South America',
+  'East Coast South America', 'West Coast Central America', 'East Coast Mexico'];
+cargoStatus = ['Working', ' On Subs', 'Fixed', 'Withdrawn', 'Failed'];
   cargo = [];
  async ngOnInit() {
     await this.auth.getProfile().subscribe(profile => {
@@ -54,6 +57,8 @@ export class CargoQuotesComponent implements OnInit {
     private _fileUtil: FileUtilService  ) {
     this.createForm();
     this.fetchCargo();
+    this.market.sort();
+    this.cargoStatus.sort();
    }
 
     // METHOD CALLED WHEN CSV FILE IS IMPORTED
@@ -142,6 +147,7 @@ export class CargoQuotesComponent implements OnInit {
         'No#' : (i + 1),
         cargo_status: this.cargoList[i].cargo_status,
         type: this.checkEmpty(this.cargoList[i].type),
+        market: this.checkEmpty(this.cargoList[i].market),
         charterer: this.cargoList[i].charterer,
         broker: this.cargoList[i].broker,
         quantity: this.cargoList[i].quantity,
@@ -228,6 +234,7 @@ export class CargoQuotesComponent implements OnInit {
     this.cargoFrom = this.fb.group({
       type: [null],
       cargo_status: [null],
+      market: [null],
       charterer: [null, Validators.compose([
           Validators.required,
           Validators.maxLength(20)
@@ -296,6 +303,7 @@ export class CargoQuotesComponent implements OnInit {
     const data = {
         type: this.cargoFrom.get('type').value,
         cargo_status: this.cargoFrom.get('cargo_status').value,
+        market: this.cargoFrom.get('market').value,
         charterer: this.cargoFrom.get('charterer').value,
         broker: this.cargoFrom.get('broker').value,
         grade:  this.cargoFrom.get('grade').value,

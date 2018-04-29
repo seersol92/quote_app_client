@@ -8,11 +8,35 @@
         <div class="modal-body">
             <form class="form-horizontal" role="form" [formGroup] = "cargoReg" (submit) = "onSubmit()">
                 <fieldset>
-                    <div class="form-group">
-                    <label for="grade" class="col-lg-2 control-label">GRADE</label>
+                <div class="form-group">
+                    <label for="grade" class="col-lg-2 control-label">API</label>
                     <div class="col-lg-10">
-                        <input type="name" class="form-control" formControlName="grade" required id="grade" placeholder="GRADE" > 
+                        <input type="name" class="form-control" formControlName="api" required  placeholder="Api" > 
                     </div>
+                </div>
+                <div class="form-group">
+                    <label for="grade" class="col-lg-2 control-label">SULFUR</label>
+                    <div class="col-lg-10">
+                        <input type="name" class="form-control" formControlName="sulfur" required  placeholder="SULFUR" > 
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="grade" class="col-lg-2 control-label">ORIGIN</label>
+                    <div class="col-lg-10">
+                        <input type="name" class="form-control" formControlName="origin" required  placeholder="ORIGIN" > 
+                    </div>
+                </div>
+                <div class="form-group">
+                        <label for="grade" class="col-lg-2 control-label">ORIGIN TERMINAL</label>
+                        <div class="col-lg-10">
+                            <input type="name" class="form-control" formControlName="origin_terminal" required placeholder="ORIGIN TERMINAL" > 
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="grade" class="col-lg-2 control-label">GRADE</label>
+                        <div class="col-lg-10">
+                            <input type="name" class="form-control" formControlName="grade" required id="grade" placeholder="GRADE" > 
+                        </div>
                     </div>
                     <div class="form-group">
                     <label for="des" class="col-lg-2 control-label">DESCRIPTION</label>
@@ -23,7 +47,12 @@
                     <div class="form-group">
                     <label for="type" class="col-lg-2 control-label">TYPE</label>
                     <div class="col-lg-10">
-                        <input type="name" class="form-control" id="type" formControlName="type" required placeholder="TYPE" > 
+                        <select name="type"  formControlName="type" class="form-control" >
+                            <option selected hidden>SELECT TYPE</option>
+                            <option value="CPP">CCP</option>
+                            <option value="DPP">DPP</option>
+                            <option value="Crude">Crude</option>
+                        </select>
                     </div>
                     </div>
                     <div class="form-group">
@@ -53,6 +82,10 @@
                 <thead>
                     <tr>
                         <th>#</th>
+                        <th>Api</th>
+                        <th>Sulfur</th>
+                        <th>Origin</th>
+                        <th>Origin Terminal</th>
                         <th>Grade</th>
                         <th>Type</th>
                         <th>Description</th>
@@ -64,10 +97,14 @@
                 <tbody>
                     <tr *ngFor="let item of cargoList; index as i">
                         <td>{{i+1}}</td>
+                        <td>{{item.api}}</td>
+                        <td>{{item.sulfur}}</td>
+                        <td>{{item.origin}}</td>
+                        <td>{{item.origin_terminal}}</td>
                         <td>{{item.grade}}</td>
                         <td>{{item.type}}</td>
                         <td>{{item.description}}</td>
-                        <td>----</td>
+                        <td>{{item.added_by}}</td>
                         <td>{{ item.dateadded | date:'dd/MM/yyyy' }}</td>
                         <td>
                             <a href="javascript:void(0)" (click)="onEditCargo(i, cargoregister)" ><span class="glyphicon glyphicon-pencil info"></span></a>

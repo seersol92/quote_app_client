@@ -1,4 +1,4 @@
-import { Component, TemplateRef } from '@angular/core';
+import { Component, TemplateRef, OnInit } from '@angular/core';
 import { BsModalService } from 'ngx-bootstrap/modal';
 import { BsModalRef } from 'ngx-bootstrap/modal/bs-modal-ref.service';
 import {AbstractControl} from '@angular/forms';
@@ -6,13 +6,14 @@ import { FormControl, FormGroup, FormBuilder, Validators } from '@angular/forms'
 import { AuthService } from '../services/auth.service';
 import { Observable } from 'rxjs/Observable';
 import { Router } from '@angular/router';
+import { constructDependencies } from '@angular/core/src/di/reflective_provider';
 
 @Component({
   selector: 'app-cargo-register',
   templateUrl: './cargo-register.component.html',
   styleUrls: ['./cargo-register.component.css']
 })
-export class CargoRegisterComponent  {
+export class CargoRegisterComponent implements OnInit {
   modalRef: BsModalRef;
   cargoReg: FormGroup;
   messageClass: String = null;
@@ -24,6 +25,7 @@ export class CargoRegisterComponent  {
   cargo = [];
   isEditCargo: Boolean = false;
   formProcessing: Boolean = false;
+  userName: string = null;
   constructor(
     private fb: FormBuilder,
     private auth: AuthService,
@@ -34,6 +36,10 @@ export class CargoRegisterComponent  {
     this.cargoFetch();
    }
 
+   ngOnInit () {
+    const  userData = this.auth.getUserData();
+    this.userName = userData.user.username;
+   }
    openModal(template: TemplateRef<any>) {
     this.cargoModalTitleTxt = 'Create Cargo Registry';
     this.cargoModalSaveBtnTxt = 'Save Cargo';
@@ -47,23 +53,42 @@ export class CargoRegisterComponent  {
    */
   createForm() {
     this.cargoReg = this.fb.group({
+      api: [null, Validators.compose([
+        Validators.required,
+        Validators.maxLength(20)
+      ])
+      ],
+      sulfur: [null, Validators.compose([
+        Validators.required,
+        Validators.maxLength(20)
+      ])
+      ],
+      origin: [null, Validators.compose([
+        Validators.required,
+        Validators.maxLength(20)
+      ])
+      ],
       grade: [null, Validators.compose([
+        Validators.required,
+        Validators.maxLength(20)
+      ])
+      ],
+      origin_terminal: [null, Validators.compose([
               Validators.required,
-              Validators.minLength(3),
-              Validators.maxLength(20),
-              Validators.pattern('(^[-_ a-zA-Z0-9]+$)')])
+              Validators.maxLength(20)
+            ])
       ],
       des: [null, Validators.compose([
             Validators.required,
             Validators.minLength(3),
             Validators.maxLength(20),
-            Validators.pattern('(^[-_ a-zA-Z0-9]+$)')])
+          ])
       ],
       type: [null, Validators.compose([
             Validators.required,
             Validators.minLength(3),
             Validators.maxLength(20),
-            Validators.pattern('(^[-_ a-zA-Z0-9]+$)')])
+          ])
       ]
     });
   }
@@ -128,9 +153,14 @@ export class CargoRegisterComponent  {
   onSubmit() {
   this.formProcessing = true;
   const data = {
+    api: this.cargoReg.get('api').value,
+    sulfur: this.cargoReg.get('sulfur').value,
+    origin: this.cargoReg.get('origin').value,
+    origin_terminal: this.cargoReg.get('origin_terminal').value,
     grade: this.cargoReg.get('grade').value,
     type: this.cargoReg.get('type').value,
-    description: this.cargoReg.get('des').value
+    description: this.cargoReg.get('des').value,
+    added_by: this.userName
   };
   if (this.cargoRegisterId !== null && this.isEditCargo) {
       data['cargo_id'] = this.cargoRegisterId;
@@ -148,6 +178,10 @@ export class CargoRegisterComponent  {
         this.cargoModalSaveBtnTxt = 'Update Cargo';
         this.isEditCargo = true;
         this.cargoReg.patchValue({
+          api: this.cargo['api'],
+          sulfur: this.cargo['sulfur'],
+          origin: this.cargo['origin'],
+          origin_terminal: this.cargo['origin_terminal'],
           grade: this.cargo['grade'],
           des  : this.cargo['description'],
           type : this.cargo['type']

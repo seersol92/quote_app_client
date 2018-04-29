@@ -51,6 +51,19 @@
                         </div>
                     </div>
                     <div class="form-group">
+                            <div class="col-lg-2">
+                                <label for="">Market</label>
+                            </div>
+                            <div class="col-lg-10">
+                                <select name="" id="" class="form-control" formControlName="market" [(ngModel)]='cargo.market'>
+                                    <option  selected hidden>Select Market</option>
+                                    <option  *ngFor="let option of market" [ngValue]="option">
+                                        {{option}}
+                                    </option>
+                                </select>
+                            </div>
+                        </div>
+                    <div class="form-group">
                     <div class="col-lg-5 col-lg-offset-2">
                         <input type="text" formControlName="charterer" class="form-control" [(ngModel)]="cargo.charterer" placeholder="CHARTERER">
                     </div>
@@ -205,6 +218,9 @@
             <th>
                 Type
             </th>
+            <th>
+                Market
+            </th>
             <th (click)="sort('charterer')">
                 <span class="glyphicon sort-icon" *ngIf="key =='charterer'" 
                 [ngClass]="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span>
@@ -271,6 +287,7 @@
             <td>{{i+1}}</td>
             <td>{{item.cargo_status}}</td>
             <td>{{item.type}}</td>
+            <td>{{item.market}}</td>
             <td>{{item.charterer}}</td>
             <td>{{item.broker}}</td>
             <td>{{item.grade}}</td>

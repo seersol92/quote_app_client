@@ -52,7 +52,6 @@ export class ChatAppComponent implements OnInit, OnDestroy {
     });
   }
   ngOnInit() {
-    console.log('true');
     const  userData = this.authService.getUserData();
     this.username = userData.user.username;
     this.sendForm = this.formBuilder.group({
