@@ -19,7 +19,7 @@ import * as moment from 'moment';
   styleUrls: ['./cargo-quotes.component.css']
 })
 export class CargoQuotesComponent implements OnInit {
-  public cargoQuoteId: number;
+  public cargoQuoteId: any;
   modalRef: BsModalRef;
   cargoFrom: FormGroup;
   cargoModalTitleTxt: String = null;
@@ -344,6 +344,7 @@ ngOnInit() {
 
     this.auth.getRequest('/cargo-quote/get-quote/' + cargoId, '' ).subscribe( res => {
      this.cargo = res.data;
+     this.cargoQuoteId   = cargoId;
      this.cargo['date1'] = this.transform(this.cargo['date1']);
      this.cargo['date2'] = this.transform(this.cargo['date2']);
      this.cargoModalTitleTxt = 'Edit Cargo';
