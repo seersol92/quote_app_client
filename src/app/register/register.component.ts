@@ -121,7 +121,7 @@ export class RegisterComponent {
     const promise = new Promise<any>((resolve, reject) => {
       setTimeout(() => {
           this.auth.checkEmail(email).subscribe( data => {
-            if (data.success){
+            if (data.success) {
               resolve({'checkEmail': true});
             }
               resolve(null);

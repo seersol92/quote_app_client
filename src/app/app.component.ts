@@ -20,9 +20,17 @@ export class AppComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    const  userData = this.auth.getUserData();
+    this.auth.getProfile().subscribe(profile => {
+      if (profile.user) {
+       this.auth.loggedinName = profile.user.username ;
+       this.auth.isAdmin = profile.user.is_admin;
+      }
+     });
+   /* const  userData = this.auth.getUserData();
+    if (userData !== null) {
     this.userName = userData.user.username;
     this.isAdmin  = userData.user.isadmin;
+    } */
     }
 
   logMeOut() {

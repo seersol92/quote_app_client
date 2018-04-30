@@ -55,8 +55,6 @@ export class LoginComponent implements OnInit {
             this.auth.loggedinName = data.user.username;
             this.auth.loggedInId = data.user.loggedId;
             this.auth.isAdmin = data.user.isadmin;
-            console.log(this.auth.loggedInId);
-            console.log(this.auth.isAdmin);
             if (this.previousUrl) {
               this.router.navigate([this.previousUrl]);
             } else {

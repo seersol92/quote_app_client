@@ -72,10 +72,13 @@ export class AuthService {
     .catch(this.handleError);
   }
   getRequest(url, data) {
-    return this.http.get(this.domain + url, data)
+    return this.http.get(this.domain + url)
     .map(res => res.json())
     .catch(this.handleError);
   }
+
+
+
   /* LOGOUT USER
    */
    logout() {

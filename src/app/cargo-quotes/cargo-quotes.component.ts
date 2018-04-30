@@ -340,17 +340,17 @@ ngOnInit() {
     });
   }
 
-  onEditCargo(cargoIndex: number, template) {
-    this.cargo =  JSON.parse(JSON.stringify(this.cargoList[cargoIndex]));
-    if (this.cargo) {
-        this.cargo['date1'] = this.transform(this.cargo['date1']);
-        this.cargo['date2'] = this.transform(this.cargo['date2']);
-        this.cargoQuoteId = this.cargoList[cargoIndex]['_id'];
-        this.cargoModalTitleTxt = 'Edit Cargo';
-        this.cargoModalSaveBtnTxt = 'Update Cargo';
-        this.isEditForm = true;
-        this.modalRef = this.modalService.show(template);
-    }
+  onEditCargo(cargoId: string, template) {
+
+    this.auth.getRequest('/cargo-quote/get-quote/' + cargoId, '' ).subscribe( res => {
+     this.cargo = res.data;
+     this.cargo['date1'] = this.transform(this.cargo['date1']);
+     this.cargo['date2'] = this.transform(this.cargo['date2']);
+     this.cargoModalTitleTxt = 'Edit Cargo';
+     this.cargoModalSaveBtnTxt = 'Update Cargo';
+     this.isEditForm = true;
+     this.modalRef = this.modalService.show(template);
+    });
   }
 
   update () {
