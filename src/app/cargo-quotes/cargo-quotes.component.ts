@@ -355,6 +355,7 @@ ngOnInit() {
   }
 
   update () {
+     console.log(this.cargoQuoteId);
     try {
       if (this.cargoQuoteId) {
         const data = this.getFormData();
