@@ -345,8 +345,8 @@ ngOnInit() {
     this.auth.getRequest('/cargo-quote/get-quote/' + cargoId, '' ).subscribe( res => {
      this.cargo = res.data;
      this.cargoQuoteId   = cargoId;
-     this.cargo['date1'] = this.transform(this.cargo['date1']);
-     this.cargo['date2'] = this.transform(this.cargo['date2']);
+     this.cargo['date1'] = this.cargo['date1'].split('T')[0];
+     this.cargo['date2'] = this.cargo['date2'].split('T')[0];
      this.cargoModalTitleTxt = 'Edit Cargo';
      this.cargoModalSaveBtnTxt = 'Update Cargo';
      this.isEditForm = true;

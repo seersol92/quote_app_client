@@ -87,9 +87,8 @@ export class RegisterComponent {
     });
   }
   strongPassword(c: FormControl) {
-    console.log(c.value);
     const regExp = new RegExp('^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#)(\$%\^&\*])(?=.{8,})');
-    return regExp.test(c.value) ? null : {'strongPassword': true }
+    return regExp.test(c.value) ? null : {'strongPassword': true };
   }
   /* @type: Asynchronous
    * Only hit the serve when name is valid do not access for every case :)
@@ -144,7 +143,7 @@ export class RegisterComponent {
         ice: this.regForm.get('ice').value,
         whatsapp: this.regForm.get('whatsapp').value,
         password: this.regForm.get('password').value,
-        is_admin: true
+        is_admin: false
       };
     this.auth.registerUser(user).subscribe(data => {
       if (!data.success) {
