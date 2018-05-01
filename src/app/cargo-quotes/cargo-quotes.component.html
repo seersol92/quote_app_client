@@ -210,15 +210,19 @@
         <thead>
             <tr>
             <th>#</th>
-            <th (click)="sort('status')">
-                <span class="glyphicon sort-icon" *ngIf="key =='status'" 
+            <th (click)="sort('cargo_status')">
+                <span class="glyphicon sort-icon" *ngIf="key =='cargo_status'" 
                 [ngClass]="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span>
                 Status
             </th>
-            <th>
+            <th (click)="sort('type')">
+                <span class="glyphicon sort-icon" *ngIf="key =='type'" 
+                [ngClass]="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span>
                 Type
             </th>
-            <th>
+            <th (click)="sort('market')">
+                <span class="glyphicon sort-icon" *ngIf="key =='market'" 
+                [ngClass]="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span>
                 Market
             </th>
             <th (click)="sort('charterer')">
